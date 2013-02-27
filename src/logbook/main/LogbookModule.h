@@ -3,6 +3,7 @@
 
 #include <core/main/Module.h>
 #include "../gui/WdgLogbook.h"
+#include "../gui/WdgToolbar.h"
 
 namespace logbook
 {
@@ -20,22 +21,21 @@ namespace logbook
 		QString	getModuleName() const;
 		QString getDisplayName() const;
 		bool isInit() const;
-		
-		core::OptionsBase* getOptionsWdg(QWidget*);
-		QList<QMenu*> getMenus(QWidget*) const;
-		QList<QPair<QString, QWidget*>> getMainWidgets(QWidget*);
-		QList<QPair<QString, QWidget*>> getToolbarWidgets(QWidget*);
-		
+				
 		QByteArray saveGeometry();
 		bool restoreGeometry(const QByteArray&);
 		QByteArray saveState();
 		bool restoreState(const QByteArray&);
+
+	public slots:
+		void createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent);
 		
 	protected:
 		bool iInit(QWidget*);
 
 	private:
 		WdgLogbook*	m_logbook;
+		WdgToolbar* m_toolbar;
 	};
 }
 

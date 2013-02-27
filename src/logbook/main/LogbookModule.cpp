@@ -1,6 +1,5 @@
 #include "../gui/WdgLogEntry.h"
 #include "../gui/WdgOptions.h"
-#include "../gui/WdgToolbar.h"
 #include "LogbookModule.h"
 
 namespace logbook
@@ -36,49 +35,21 @@ namespace logbook
 		m_logbook = new WdgLogbook(parent);
 		if (!m_logbook)
 			return false;
+
+		addModuleWidget(core::Module::WT_MAIN, getDisplayName(), m_logbook);
+
+		m_toolbar = new WdgToolbar(parent);
+		if (!m_toolbar)
+			return false;
+
+		addModuleWidget(core::Module::WT_TOOLBAR, getDisplayName(), m_toolbar);
 		
 		return true;
 	}
 	
-	core::OptionsBase* LogbookModule::getOptionsWdg(QWidget* parent)
+	void LogbookModule::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
 	{
-		return new WdgOptions(&m_properties, parent);
-	}
-	
-	QList<QMenu*> LogbookModule::getMenus(QWidget* parent) const
-	{
-		QList<QMenu*> menus;
-
-		// add menu
-		QMenu* menu = new QMenu(getModuleName(), parent);
-		QAction* nothing = new QAction("No entries here", parent);
-		menu->addAction(nothing);
-
-		menus.push_back(menu);
-
-		return menus;
-	}
-
-	QList<QPair<QString, QWidget*>> LogbookModule::getMainWidgets(QWidget* parent)
-	{
-		Q_UNUSED(parent);
-		QList<QPair<QString, QWidget*>> mainWidgets;
-
-		QPair<QString, QWidget*> wdgPair(getDisplayName(), m_logbook);
-		mainWidgets.push_back(wdgPair);
-
-		return mainWidgets;
-	}
-	
-	QList<QPair<QString, QWidget*>> LogbookModule::getToolbarWidgets(QWidget* parent)
-	{
-		Q_UNUSED(parent);
-		QList<QPair<QString, QWidget*>> toolbarWidgets;
-
-		QPair<QString, QWidget*> wdgPair(getDisplayName(), new WdgToolbar(parent));
-		toolbarWidgets.push_back(wdgPair);
-
-		return toolbarWidgets;
+		widgets[getDisplayName()] = new WdgOptions(&m_properties, parent);
 	}
 
 	QByteArray LogbookModule::saveGeometry()

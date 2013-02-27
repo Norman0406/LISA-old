@@ -20,7 +20,8 @@ namespace lisa
 		QString getDisplayName() const;
 		bool isInit() const;
 		
-		bool applyProperties();
+		bool createWindow();
+		
 		MainWindow* getWindow();
 		core::OptionsBase* getOptionsWdg(QWidget*);
 		
@@ -28,6 +29,9 @@ namespace lisa
 		bool restoreGeometry(const QByteArray&);
 		QByteArray saveState();
 		bool restoreState(const QByteArray&);
+
+	public slots:
+		void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
 
 	protected:
 		bool iInit(QWidget*);

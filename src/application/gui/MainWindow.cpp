@@ -8,11 +8,12 @@
 
 namespace lisa
 {
-	MainWindow::MainWindow(System* system, QWidget* parent)
-		: QMainWindow(parent),
-		m_wdgLogging(0), m_system(system)
+	MainWindow::MainWindow(QWidget* parent)
+		: QMainWindow(parent), m_wdgLogging(0)
 	{
 		setupUi(this);
+
+		appSidebarWidgets->removeItem(0);
 		
 		// add toolbar toggles to "View" menu
 		QList<QMenu*> entries = appMenuBar->findChildren<QMenu*>();
@@ -34,38 +35,28 @@ namespace lisa
 	MainWindow::~MainWindow(void)
 	{
 	}
-	
-	void MainWindow::addMenu(QMenu* menu)
+
+	void MainWindow::addModuleWidget(core::Module::WidgetType type, const QString& text, QWidget* widget)
 	{
-		menu->setTearOffEnabled(true);
-		
-		bool found = false;
-		
-		// insert before "Help" menu
-		QList<QMenu*> entries = appMenuBar->findChildren<QMenu*>();
-		for (QList<QMenu*>::const_iterator it = entries.begin(); it != entries.end(); it++) {
-			const QMenu* curMenu = *it;
-			if (curMenu->title() == "Help") {
-				appMenuBar->insertMenu(curMenu->menuAction(), menu);
-				found = true;
-				break;
-			}			
+		QString typeStr = "unknown";
+		switch (type) {
+		case core::Module::WT_MAIN:
+			typeStr = "WT_MAIN";
+			appMainWidgets->addTab(widget, text);
+			break;
+		case core::Module::WT_TOOLBAR:
+			typeStr = "WT_TOOLBAR";
+			appToolbarWidgets->addTab(widget, text);
+			break;
+		case core::Module::WT_SIDEBAR:
+			typeStr = "WT_SIDEBAR";
+			appSidebarWidgets->addItem(widget, text);
+			break;
 		}
 
-		if (!found)
-			appMenuBar->addMenu(menu);
+		qDebug() << "added widget with type " << typeStr << " and text " << text;
 	}
-
-	void MainWindow::addMainWidget(QWidget* widget, QString tabName)
-	{
-		appMainWidgets->addTab(widget, tabName);
-	}
-
-	void MainWindow::addToolbarWidget(QWidget* widget, QString tabName)
-	{
-		appToolbarWidgets->addTab(widget, tabName);
-	}
-
+	
 	void MainWindow::showAboutDlg()
 	{
 		DlgAbout dlg;
@@ -75,7 +66,12 @@ namespace lisa
 	
 	void MainWindow::showOptionsDlg()
 	{
-		DlgOptions dlg(m_system->getModules());
+		DlgOptions dlg;
+
+		// create options widget for dialog to create child widgets
+		connect(&dlg, &DlgOptions::createOptionWidgets, this, &MainWindow::createOptionWidgets);
+
+		dlg.init();
 		dlg.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
 		dlg.exec();
 	}

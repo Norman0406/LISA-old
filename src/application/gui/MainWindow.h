@@ -1,6 +1,7 @@
 #ifndef LISA_MAINWINDOW_H
 #define LISA_MAINWINDOW_H
 
+#include <core/main/Module.h>
 #include <core/common/Logging.h>
 #include "ui_MainWindow.h"
 
@@ -15,24 +16,23 @@ namespace lisa
 		Q_OBJECT
 
 	public:
-		MainWindow(System*, QWidget* parent = 0);
+		MainWindow(QWidget* parent = 0);
 		~MainWindow(void);
-				
-		void addMenu(QMenu*);
-		void addMainWidget(QWidget*, QString);
-		void addToolbarWidget(QWidget*, QString);
-		
+
 	public slots:
 		void showAboutDlg();
 		void showOptionsDlg();
 		void newLoggingEntry(const core::LoggingEntry&);
+		void addModuleWidget(core::Module::WidgetType, const QString&, QWidget*);
+		
+	signals:
+		void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
 		
 	protected:
 		bool iInit();
 
 	private:
-		System*			m_system;
-		WdgLogging*		m_wdgLogging;
+		WdgLogging* m_wdgLogging;
 
 	};
 }

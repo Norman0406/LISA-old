@@ -95,8 +95,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -169,7 +167,7 @@
     <set>Qt::BottomDockWidgetArea|Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Main</string>
+    <string>Toolbar</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>4</number>
@@ -206,36 +204,7 @@
         <bool>false</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">QTabWidget::pane {
-	color: rgb(246, 246, 244);
-	margin: 0px,1px,1px,1px;
-	border: 2px solid #020202;
-	border-radius: 7px;
-	background: #E6E6E3;
-      }
-
-  QTabWidget::tab-bar {          
-	left: 5px; /* move to the right by 5px */
- } 
-
-/* Style the tab using the tab sub-control. Note that          it reads QTabBar _not_ QTabWidget */
-QTabBar::tab {
-background-color: qlineargradient(spread:pad, x1:0.0170455, y1:0, x2:0, y2:1, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(165, 165, 165, 255));
-color: rgb(85, 255, 255);
-border: 1px solid #C4C4C3;
-     padding: 5px;
- }
-       
-QTabBar::tab:selected, QTabBar::tab:hover {
-	/*background-color: qlineargradient(spread:pad, x1:0.0170455, y1:0, x2:0, y2:1, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(165, 165, 165, 255));*/
-     }
-
- QTabBar::tab:selected {
-     /* expand/overlap to the left and right by 4px */
-/*     margin-left: -4px;*/
-/*    margin-right: -4px;*/
- }
-</string>
+        <string notr="true"/>
        </property>
        <property name="tabPosition">
         <enum>QTabWidget::North</enum>
@@ -244,7 +213,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>-1</number>
        </property>
        <property name="iconSize">
         <size>
@@ -258,16 +227,6 @@ QTabBar::tab:selected, QTabBar::tab:hover {
        <property name="documentMode">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>General</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Seite</string>
-        </attribute>
-       </widget>
       </widget>
      </item>
     </layout>
@@ -334,6 +293,9 @@ QTabBar::tab:selected, QTabBar::tab:hover {
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="windowTitle">
+    <string>Sidebar</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
@@ -352,9 +314,9 @@ QTabBar::tab:selected, QTabBar::tab:hover {
       <number>2</number>
      </property>
      <item row="0" column="0">
-      <widget class="QToolBox" name="toolBox">
+      <widget class="QToolBox" name="appSidebarWidgets">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="tabSpacing">
         <number>0</number>
@@ -365,24 +327,11 @@ QTabBar::tab:selected, QTabBar::tab:hover {
           <x>0</x>
           <y>0</y>
           <width>76</width>
-          <height>430</height>
+          <height>451</height>
          </rect>
         </property>
         <attribute name="label">
          <string>Page 1</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="page_2">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>76</width>
-          <height>430</height>
-         </rect>
-        </property>
-        <attribute name="label">
-         <string>Page 2</string>
         </attribute>
        </widget>
       </widget>

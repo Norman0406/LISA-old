@@ -18,19 +18,32 @@ namespace core
 	class Module
 		: public ModuleBase
 	{
+		Q_OBJECT
+
 	public:
+		enum WidgetType
+		{
+			WT_MAIN,
+			WT_TOOLBAR,
+			WT_SIDEBAR,
+		};
+		
+		struct ModuleWidget
+		{
+			WidgetType type;
+			QString text;
+			QWidget* widget;
+		};
+
 		virtual ~Module(void);
 				
 		// initializing
 		bool init(lisa::System*, QWidget*);
 		virtual bool isInit() const;
-
-		// module interfacing with main window
-		virtual QList<QMenu*> getMenus(QWidget*) const;
-		virtual QList<QPair<QString, QWidget*>> getMainWidgets(QWidget*);
-		virtual QList<QPair<QString, QWidget*>> getToolbarWidgets(QWidget*);
-		virtual OptionsBase* getOptionsWdg(QWidget*);
-
+		
+		const QVector<ModuleWidget*>& getModuleWidgets();
+		QVector<ModuleWidget*> getModuleWidgets(WidgetType);
+		
 		// property management
 		template <typename T>
 		bool addProperty(const QString& name, const T& defaultVal);
@@ -46,17 +59,25 @@ namespace core
 		virtual QByteArray saveState() = 0;
 		virtual bool restoreState(const QByteArray&) = 0;
 
+	public slots:
+		virtual void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
+
+	signals:
+		void moduleWidgetAdded(WidgetType, const QString&, QWidget*);
+
 	protected:
 		Module();
 
 		lisa::System* getSystem();
+		void addModuleWidget(WidgetType, const QString&, QWidget*);
 		
 		PropertyList m_properties;
 		
 	private:
-		bool m_isInit;
+		bool			m_isInit;
 		lisa::System*	m_system;
-		QWidget* m_parent;
+		QWidget*		m_parent;
+		QVector<ModuleWidget*> m_moduleWidgets;
 	};
 	
 	template <typename T>

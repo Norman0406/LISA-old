@@ -27,11 +27,16 @@ namespace lisa
 	System::~System(void)
 	{
 		qDebug() << "shutting down system";
+		
+		MainWindow* mainWindow = m_mainModule->getWindow();
 
 		// delete all registered modules
 		for (int i = 0; i < m_modules.size(); i++) {
 			core::Module* mod = m_modules[i];
 			mod->saveProperties();
+			
+			// disable module adding
+			QObject::disconnect(mod, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
 
 			// delete main module at last
 			if (mod == m_mainModule)
@@ -41,7 +46,6 @@ namespace lisa
 		}
 
 		// delete main window at last
-		MainWindow* mainWindow = m_mainModule->getWindow();
 		QObject::disconnect(m_logging, &core::Logging::newLoggingEntry,
 			mainWindow, &MainWindow::newLoggingEntry);
 		delete m_mainModule;
@@ -210,32 +214,25 @@ namespace lisa
 
 		if (module != m_mainModule)
 			parent = m_mainModule->getWindow();
+		else {
+			// the main module has to create the window before any other module, so that they can call the signal and
+			// dynamically add widgets to the main window during initialization.
+			m_mainModule->createWindow();
+		}
+					
+		MainWindow* mainWindow = m_mainModule->getWindow();
+		if (!mainWindow)
+			return false;
+
+		// connect module to the main window
+		QObject::connect(module, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
+
+		// connect module to the options dialog in the main window			
+		QObject::connect(mainWindow, &MainWindow::createOptionWidgets, module, &core::Module::createOptionWidgets);
 		
 		// init module
 		if (!module->init(this, parent))
 			return false;
-
-		MainWindow* mainWindow = m_mainModule->getWindow();
-		if (!mainWindow)
-			return false;
-		
-		// add menu entries
-		QList<QMenu*> menus = module->getMenus(mainWindow);
-		for (QList<QMenu*>::const_iterator it = menus.begin();
-			it != menus.end(); it++)
-			mainWindow->addMenu(*it);
-		
-		// add main widgets
-		QList<QPair<QString, QWidget*>> mainWidgets = module->getMainWidgets(mainWindow);
-		for (QList<QPair<QString, QWidget*>>::const_iterator it = mainWidgets.begin();
-			it != mainWidgets.end(); it++)
-			mainWindow->addMainWidget(it->second, it->first);
-
-		// add toolbar widgets
-		QList<QPair<QString, QWidget*>> toolbarWidgets = module->getToolbarWidgets(mainWindow);
-		for (QList<QPair<QString, QWidget*>>::const_iterator it = toolbarWidgets.begin();
-			it != toolbarWidgets.end(); it++)
-			mainWindow->addToolbarWidget(it->second, it->first);
 
 		// restore module state if possible
 		if (m_stateInfo.find(module->getModuleName()) != m_stateInfo.end()) {
@@ -315,11 +312,30 @@ namespace lisa
 			mainWindow->newLoggingEntry(entries[i]);
 		QObject::connect(m_logging, &core::Logging::newLoggingEntry,
 			mainWindow, &MainWindow::newLoggingEntry, Qt::QueuedConnection);
-
+		
 		// apply loaded properties for all modules
-		m_mainModule->applyProperties();
+		applyProperties();
 
 		return true;
+	}
+
+	void System::applyProperties()
+	{
+		// iterate through registered modules and get option widgets
+		for (int i = 0; i < m_modules.size(); i++) {
+			core::Module* mod = m_modules[i];
+
+			// create an option widget with no parent (don't forget to delete later)
+			QMap<QString, core::OptionsBase*> widgets;
+			mod->createOptionWidgets(widgets, 0);
+
+			// apply properties for each single option widget
+			for (QMap<QString, core::OptionsBase*>::const_iterator it = widgets.begin();
+				it != widgets.end(); it++) {
+					it.value()->apply();
+					delete it.value();
+			}
+		}
 	}
 
 	int System::run()
@@ -344,7 +360,7 @@ namespace lisa
 		}
 
 #ifdef _MSC_VER
-		//MEMDUMP;
+		MEMDUMP;
 #endif
 
 		return 1;

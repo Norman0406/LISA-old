@@ -35,6 +35,7 @@ namespace lisa
 		bool removeModule(core::Module*);
 		bool initModule(core::Module*);
 		bool initModules();
+		void applyProperties();
 		
 		void loadState();
 		void saveState();

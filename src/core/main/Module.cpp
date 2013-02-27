@@ -7,10 +7,14 @@ namespace core
 	Module::Module()
 		: m_system(0), m_isInit(false), m_parent(0)
 	{
+		qRegisterMetaType<core::Module::WidgetType>("core::Module::WidgetType");
 	}
 
 	Module::~Module(void)
 	{
+		for (int i = 0; i < m_moduleWidgets.size(); i++)
+			delete m_moduleWidgets[i];
+		m_moduleWidgets.clear();
 	}
 	
 	bool Module::init(lisa::System* sys, QWidget* parent)
@@ -51,39 +55,40 @@ namespace core
 	{
 		return m_system;
 	}
-	
-	QList<QMenu*> Module::getMenus(QWidget* parent) const
-	{
-		Q_UNUSED(parent);
 
-		// no menus by default
-		return QList<QMenu*>();
+	void Module::addModuleWidget(WidgetType type, const QString& text, QWidget* widget)
+	{
+		ModuleWidget* modWdg = new ModuleWidget;
+		modWdg->type = type;
+		modWdg->text = text;
+		modWdg->widget = widget;
+		m_moduleWidgets.push_back(modWdg);
+
+		emit moduleWidgetAdded(type, text, widget);
 	}
 
-	QList<QPair<QString, QWidget*>> Module::getMainWidgets(QWidget* parent)
+	const QVector<Module::ModuleWidget*>& Module::getModuleWidgets()
 	{
-		Q_UNUSED(parent);
-
-		// no main widgets by default
-		return QList<QPair<QString, QWidget*>>();
+		return m_moduleWidgets;
 	}
 	
-	QList<QPair<QString, QWidget*>> Module::getToolbarWidgets(QWidget* parent)
+	QVector<Module::ModuleWidget*> Module::getModuleWidgets(WidgetType type)
 	{
-		Q_UNUSED(parent);
-
-		// no toolbar widgets by default
-		return QList<QPair<QString, QWidget*>>();
+		QVector<Module::ModuleWidget*> result;
+		for (int i = 0; i < m_moduleWidgets.size(); i++) {
+			ModuleWidget* wdg = m_moduleWidgets[i];
+			if (wdg->type == type)
+				result.push_back(wdg);
+		}
+		return result;
 	}
 	
-	OptionsBase* Module::getOptionsWdg(QWidget* parent)
+	void Module::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
 	{
+		Q_UNUSED(widgets);
 		Q_UNUSED(parent);
-
-		// no options widget by default
-		return 0;
 	}
-	
+
 	bool Module::loadProperties()
 	{
 		QString folder = FileUtils::openFolder(SF_CONFIG, false);

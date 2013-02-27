@@ -3,6 +3,7 @@
 
 #include <core/main/Module.h>
 #include "../gui/WdgDigital.h"
+#include "../gui/WdgToolbar.h"
 
 namespace digital
 {
@@ -21,21 +22,20 @@ namespace digital
 		QString getDisplayName() const;
 		bool isInit() const;
 
-		core::OptionsBase* getOptionsWdg(QWidget*);
-		QList<QMenu*> getMenus(QWidget*) const;
-		QList<QPair<QString, QWidget*>> getMainWidgets(QWidget*);
-		QList<QPair<QString, QWidget*>> getToolbarWidgets(QWidget*);
-		
 		QByteArray saveGeometry();
 		bool restoreGeometry(const QByteArray&);
 		QByteArray saveState();
 		bool restoreState(const QByteArray&);
-		
+
+	public slots:
+		void createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent);
+				
 	protected:
 		bool iInit(QWidget*);
 
 	private:
 		WdgDigital*	m_digital;
+		WdgToolbar* m_toolbar;
 	};
 }
 

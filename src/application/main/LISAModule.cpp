@@ -35,31 +35,32 @@ namespace lisa
 			Module::isInit();
 	}
 	
-	bool LISAModule::iInit(QWidget* parent)
+	bool LISAModule::createWindow()
 	{
-		m_mainWindow = new MainWindow(getSystem(), parent);
+		if (m_mainWindow)
+			return false;
+
+		m_mainWindow = new MainWindow(0);
 		if (!m_mainWindow)
 			return false;
 
 		return true;
 	}
-		
-	bool LISAModule::applyProperties()
+
+	bool LISAModule::iInit(QWidget* parent)
 	{
 		if (!m_mainWindow)
 			return false;
 
-		QVector<core::Module*>& modules = getSystem()->getModules();
-
-		// apply module properties
-		for (int i = 0; i < modules.size(); i++) {
-			Module* mod = modules[i];
-			core::OptionsBase* optWdg = mod->getOptionsWdg(m_mainWindow);
-			optWdg->apply();
-			delete optWdg;
-		}
+		// does not add any widgets yet
+		Q_UNUSED(parent);
 
 		return true;
+	}
+	
+	void LISAModule::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
+	{
+		widgets[getDisplayName()] = new WdgOptions(&m_properties, parent);
 	}
 	
 	MainWindow* LISAModule::getWindow()
@@ -67,11 +68,6 @@ namespace lisa
 		return m_mainWindow;
 	}
 	
-	core::OptionsBase* LISAModule::getOptionsWdg(QWidget* parent)
-	{
-		return new WdgOptions(&m_properties, parent);
-	}
-
 	QByteArray LISAModule::saveGeometry()
 	{
 		return m_mainWindow->saveGeometry();

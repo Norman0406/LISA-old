@@ -167,22 +167,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>optModules</sender>
-   <signal>currentRowChanged(int)</signal>
-   <receiver>DlgOptions</receiver>
-   <slot>moduleChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>233</x>
-     <y>246</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>357</x>
-     <y>262</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>optOK</sender>
    <signal>clicked()</signal>
    <receiver>DlgOptions</receiver>
@@ -230,9 +214,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>optModules</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>DlgOptions</receiver>
+   <slot>entryChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>111</x>
+     <y>256</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>262</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>moduleChanged(int)</slot>
+  <slot>entryChanged(QString)</slot>
   <slot>apply()</slot>
  </slots>
 </ui>
