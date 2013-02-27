@@ -19,3 +19,17 @@ LISA will provide the following components
 
 First install the Qt SDK 
 `sudo apt-get install qt-sdk`
+
+
+##Motivation
+During a spontaneous discussion about software for radio amateurs Norman and Patrik complained about the current situation. Of course, there are a lot of software packages on the market but they all suffer from at least one of the following issues:
+
+- not opensource software
+- too pricy
+- hard to extend or modify
+- not plattform independent
+- based on pretty old binaries which may (often) require ancient operating systems (XP is dead, deal with it...)
+
+At the end of this discussion we both decided to create something new. Free of charge, open source, easy to extend and maintain and last but not least cross-plattform compatible because we rely on Qt framework.
+
+Like Steve Jobs always said: There's *One* more thing! This is all just for fun (As Linus used to say)
