@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WdgLogEntry</class>
+ <widget class="QWidget" name="WdgLogEntry">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>843</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_8">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPushButton" name="logAdd">
+         <property name="text">
+          <string>Add</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="logCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="logReset">
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="tabPosition">
+        <enum>QTabWidget::South</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_6">
+        <attribute name="title">
+         <string>General</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="1" column="2">
+              <widget class="QToolButton" name="logSetStart">
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QToolButton" name="logSetEnd">
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_32">
+               <property name="text">
+                <string>Start:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QTimeEdit" name="logStart"/>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="logFreq"/>
+             </item>
+             <item row="1" column="4">
+              <widget class="QComboBox" name="logBand"/>
+             </item>
+             <item row="2" column="4">
+              <widget class="QComboBox" name="logMode"/>
+             </item>
+             <item row="1" column="6">
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="1">
+              <widget class="QTimeEdit" name="logEnd"/>
+             </item>
+             <item row="0" column="6">
+              <spacer name="horizontalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_34">
+               <property name="text">
+                <string>Mode:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="6">
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_33">
+               <property name="text">
+                <string>Band:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>Freq:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_31">
+               <property name="text">
+                <string>Date:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_30">
+               <property name="text">
+                <string>End:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDateEdit" name="logDate">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+               <property name="timeSpec">
+                <enum>Qt::UTC</enum>
+               </property>
+               <property name="date">
+                <date>
+                 <year>2013</year>
+                 <month>1</month>
+                 <day>1</day>
+                </date>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="QToolButton" name="logSetFreq">
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="5">
+              <widget class="QToolButton" name="logSetMode">
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="4" column="1">
+              <widget class="QTextEdit" name="logComment"/>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_35">
+               <property name="text">
+                <string>Country:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_37">
+               <property name="text">
+                <string>Callsign:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_38">
+               <property name="text">
+                <string>RST Sent:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLineEdit" name="logQTH"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_39">
+               <property name="text">
+                <string>RST Rcvd:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_36">
+               <property name="text">
+                <string>QTH:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="logCall"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_40">
+               <property name="text">
+                <string>Name:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="logName"/>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_41">
+               <property name="text">
+                <string>Locator:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QComboBox" name="logCountry"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_42">
+               <property name="text">
+                <string>Comment:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QLineEdit" name="logSent"/>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="logSentNum">
+                 <property name="minimumSize">
+                  <size>
+                   <width>50</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="frame">
+                  <bool>true</bool>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::UpDownArrows</enum>
+                 </property>
+                 <property name="accelerated">
+                  <bool>false</bool>
+                 </property>
+                 <property name="suffix">
+                  <string/>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="toolButton_5">
+                 <property name="text">
+                  <string>59</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="2" column="1">
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QLineEdit" name="logRcvd"/>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="logRcvdNum">
+                 <property name="minimumSize">
+                  <size>
+                   <width>50</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="toolButton_7">
+                 <property name="text">
+                  <string>59</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="3">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLineEdit" name="logLoc"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Distance:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="logDist">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_7">
+        <attribute name="title">
+         <string>Contact</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_8">
+        <attribute name="title">
+         <string>Location</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_9">
+        <attribute name="title">
+         <string>Own Station</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_10">
+        <attribute name="title">
+         <string>Custom</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <spacer name="horizontalSpacer_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>logDate</tabstop>
+  <tabstop>logStart</tabstop>
+  <tabstop>logSetStart</tabstop>
+  <tabstop>logEnd</tabstop>
+  <tabstop>logSetEnd</tabstop>
+  <tabstop>logCall</tabstop>
+  <tabstop>logSent</tabstop>
+  <tabstop>logSentNum</tabstop>
+  <tabstop>toolButton_5</tabstop>
+  <tabstop>logRcvd</tabstop>
+  <tabstop>logRcvdNum</tabstop>
+  <tabstop>toolButton_7</tabstop>
+  <tabstop>logName</tabstop>
+  <tabstop>logComment</tabstop>
+  <tabstop>logFreq</tabstop>
+  <tabstop>logSetFreq</tabstop>
+  <tabstop>logBand</tabstop>
+  <tabstop>logMode</tabstop>
+  <tabstop>logSetMode</tabstop>
+  <tabstop>logLoc</tabstop>
+  <tabstop>logQTH</tabstop>
+  <tabstop>logCountry</tabstop>
+  <tabstop>logDist</tabstop>
+  <tabstop>logAdd</tabstop>
+  <tabstop>logCancel</tabstop>
+  <tabstop>logReset</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../Resource/logbook.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>logAdd</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>add()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>755</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>755</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logReset</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>755</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logSetStart</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>setStartTime()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logSetEnd</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>setEndTime()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logSetFreq</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>setFreq()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>452</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logSetMode</sender>
+   <signal>clicked()</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>setMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>452</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logCall</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>WdgLogEntry</receiver>
+   <slot>setCallsign(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>198</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>add()</slot>
+  <slot>cancel()</slot>
+  <slot>reset()</slot>
+  <slot>setStartTime()</slot>
+  <slot>setEndTime()</slot>
+  <slot>setFreq()</slot>
+  <slot>setMode()</slot>
+  <slot>setCallsign(QString)</slot>
+ </slots>
+</ui>

@@ -1,0 +1,93 @@
+QMAKE:
+- create bin/ directory if it doesn't exist
+- adapt files and libraries for linux
+
+APPLICATION:
+- find an intuitive GUI design which can display all of the needed information while
+	keeping the GUI simple (Should modules only display information in their respective
+	widgets and the upper toolbar, or should they also be able to add dock widgets outside
+	to the main application - to share it with other modules at the same time?)
+- context sensitive GUI concept (only show what makes sense in the current user context)
+- implement special widgets
+	- Database entry widget with expandable database line, displaying all the information not
+		currently shown, statistics etc.
+	- (un-)pinnable Dockwidget
+- maybe use a color coding for different modules
+- add a splash screen and design it with gimp
+	
+CORE:
+- provide global settings for all modules (accessible via core)
+- messaging system between modules
+- exception handling with GUI interaction
+- QSettings based alternative properties
+- create a DataStorage container which holds all the relevant user data from all
+	the modules, then add specialized classes to store user data to
+	- os specific user directory
+	- cloud storage (dropbox, google drive etc)
+	- backup locations
+- create global networking components which other modules can rely upon
+- log to a file
+- create synchronizing means between running instances
+	- the user shall be able to define a master instance, connected to all the hardware, and
+		several (remote) client instances which show the data and provide interaction.
+	- client instances must lock each other in case they share the same hardware
+	- in case of slow network speed, necessary data may be buffered
+	- if network speed allows, also voice operating is possible
+		- find a suitable codec for network transport
+
+DIGITAL:
+
+- waterfall
+	- add a vertical time scale to the overlay
+	- modify overlay contents according to widget scale, so that they don't overlap when resizing
+	- add a mouse cross when moving the mouse around in the waterfall, displaying current
+		mouse frequency, db value and time position
+	- add smoothing
+	- provide user defined scaling / clamping of displayed FFT data
+	- define proper overlapping strategy and set the speed accordingly
+	- define proper averaging and log calculation
+	- waterfall only uses direct FFT spectrum for displaying, modifies it according to display conversion,
+		does not only add a line in the pixmap but can calculate the spectrum anew if changes
+		to the display conversion occurred.
+	- user can select a range in the waterfall and monitor only the selected range in the speakers
+		(passband filter)
+	- loosen the binding between waterfall and FFT: the waterfall only displays a part of the FFT
+		to the user, while the FFT runs in the background and will also be used in modems, which
+		themselves are mostly independent from the waterfall.
+	- add option to display current spectrum as a graph
+	- add option to display waveform samples
+	
+- GUI
+	- add signal strength widget with same color coding as the waterfall
+	
+- audio
+	- enumerate audio devices and formats
+	- create AudioOutput as corresponding to AudioInput
+	- move audio buffer calculations to separate worker threads
+	
+- FFT
+	- create classes for DFT and iDFT
+	- why is the DC component leaking into surrounding bins?
+
+- modems
+	- define Modem base class for different modem implementations
+		- gets relevant FFT data in a timeslot and outputs decoded text
+		- gets text in and outputs the appropriate spectrum for a timeslot
+	- implement first standard modems PSK, QPSK and RTTY
+	- implement AGC
+	- implement AFC
+	- implement squelch
+	
+- operating
+	- create a browser, which tries to decode all available modems and displays the decoded text
+	- create an input and output modality
+	- create the possibility to work on multiple frequencies at the same time, using a split layout (maybe)
+	- provide macro programming
+	- provide interface with logbook module to retrieve information from logbook and add entries to the logbook
+	- the user can use the fft capabilities to input his voice via soundcard, apply audio filters to it and 
+		output it to the transceiver. This way, pure digital operating without touching the transceiver can
+		be realized. PTT can be realized either over VOX or control module (CAT).
+
+LOGBOOK:
+
+CONTROL:
