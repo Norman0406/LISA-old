@@ -1,5 +1,9 @@
 # Introduction
 
+LISA is an acronym for "Lightweight Integrated System for Amateur Radio". It may also refer to the intelligent little girl from the Simpsons TV show - it's up to you. LISA provides a GUI framework for different modules related to amateur radio and linking them together in one integrated application environment.
+
+All of this is based on the famous Qt libraries which ensure that LISA can be run on Windows, OSX and of course Linux.
+
 # Components
 LISA will provide the following components
 
@@ -20,6 +24,11 @@ LISA will provide the following components
 First install the Qt SDK 
 `sudo apt-get install qt-sdk`
 
+# Contributing
+LISA is currently in the pre-alpha state which means that concepts and APIs may change frequently. But if you want to contribute feel free to contact us. We are looking for OSX developers which will test the code on their machines and help us hunting (plattform-specific) bugs.
+
+#Licensing
+LISA is licensed under the [GNU General Public license](http://www.gnu.org/licenses/gpl-3.0.en.html, "GPLv3") originated by the [Free Software Foundation](http://www.fsf.org).
 
 ##Motivation
 During a spontaneous discussion about software for radio amateurs Norman and Patrik complained about the current situation. Of course, there are a lot of software packages on the market but they all suffer from at least one of the following issues:
