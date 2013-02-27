@@ -4,7 +4,7 @@
 namespace digital
 {
 	DigitalModule::DigitalModule()
-		: Module()
+		: Module(), m_digital(0), m_toolbar(0), m_sidebar(0)
 	{
 	}
 
@@ -24,7 +24,7 @@ namespace digital
 
 	bool DigitalModule::isInit() const
 	{
-		return m_digital && m_toolbar &&
+		return m_digital && m_toolbar && m_sidebar &&
 			Module::isInit();
 	}
 
@@ -42,9 +42,15 @@ namespace digital
 
 		addModuleWidget(core::Module::WT_TOOLBAR, getDisplayName(), m_toolbar);
 
+		m_sidebar = new WdgSidebar(parent);
+		if (!m_sidebar)
+			return false;
+
+		addModuleWidget(core::Module::WT_SIDEBAR, getDisplayName(), m_sidebar);
+
 		return true;
 	}
-	
+		
 	void DigitalModule::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
 	{
 		widgets[getDisplayName()] = new WdgOptions(&m_properties, parent);

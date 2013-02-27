@@ -45,7 +45,8 @@ SOURCES += \
     ../../src/digital/main/Colormap.cpp \
     ../../src/digital/audio/AudioSpectrumWorker.cpp \
     ../../src/digital/audio/AudioBuffer.cpp \
-    ../../src/digital/main/ColormapVisitor.cpp
+    ../../src/digital/main/ColormapVisitor.cpp \
+    ../../src/digital/gui/WdgSidebar.cpp
 
 HEADERS += \
     ../../src/digital/audio/AudioSpectrum.h \
@@ -59,12 +60,14 @@ HEADERS += \
     ../../src/digital/main/Colormap.h \
     ../../src/digital/audio/AudioSpectrumWorker.h \
     ../../src/digital/audio/AudioBuffer.h \
-    ../../src/digital/main/ColormapVisitor.h
+    ../../src/digital/main/ColormapVisitor.h \
+    ../../src/digital/gui/WdgSidebar.h
 
 FORMS += \
     ../../src/digital/ui/WdgToolbar.ui \
     ../../src/digital/ui/WdgOptions.ui \
-    ../../src/digital/ui/WdgDigital.ui
+    ../../src/digital/ui/WdgDigital.ui \
+    ../../src/digital/ui/WdgSidebar.ui
 
 RESOURCES += \
     ../../src/digital/res/digital.qrc

@@ -132,7 +132,7 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="appStatusBar"/>
-  <widget class="QDockWidget" name="appToolBar">
+  <widget class="QDockWidget" name="appToolbar">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -292,7 +292,10 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="appSidebar">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="windowTitle">
     <string>Sidebar</string>
    </property>

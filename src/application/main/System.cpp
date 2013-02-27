@@ -19,7 +19,7 @@ namespace lisa
 	System* System::m_instance = 0;
 
 	System::System(int argc, char *argv[])
-		: m_application(argc, argv),
+		: QObject(0), m_application(argc, argv),
 		m_mainModule(0), m_logging(0)
 	{
 	}
@@ -36,7 +36,7 @@ namespace lisa
 			mod->saveProperties();
 			
 			// disable module adding
-			QObject::disconnect(mod, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
+			disconnect(mod, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
 
 			// delete main module at last
 			if (mod == m_mainModule)
@@ -46,7 +46,7 @@ namespace lisa
 		}
 
 		// delete main window at last
-		QObject::disconnect(m_logging, &core::Logging::newLoggingEntry,
+		disconnect(m_logging, &core::Logging::newLoggingEntry,
 			mainWindow, &MainWindow::newLoggingEntry);
 		delete m_mainModule;
 		
@@ -184,11 +184,6 @@ namespace lisa
 		}
 	}
 	
-	QVector<core::Module*>& System::getModules()
-	{
-		return m_modules;
-	}
-
 	bool System::removeModule(core::Module* module)
 	{
 		for (QVector<core::Module*>::iterator it = m_modules.begin(); it != m_modules.end(); it++) {
@@ -225,13 +220,18 @@ namespace lisa
 			return false;
 
 		// connect module to the main window
-		QObject::connect(module, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
+		connect(module, &core::Module::moduleWidgetAdded, mainWindow, &MainWindow::addModuleWidget);
+		
+		// register message handling functions with the system
+		connect(module, &core::Module::msgRegister, this, &System::msgRegister);
+		connect(module, &core::Module::msgSend, this, &System::msgSend);
+		connect(module, &core::Module::msgClearDelayed, this, &System::msgClearDelayed);
 
 		// connect module to the options dialog in the main window			
-		QObject::connect(mainWindow, &MainWindow::createOptionWidgets, module, &core::Module::createOptionWidgets);
+		connect(mainWindow, &MainWindow::createOptionWidgets, module, &core::Module::createOptionWidgets);
 		
 		// init module
-		if (!module->init(this, parent))
+		if (!module->init(parent))
 			return false;
 
 		// restore module state if possible
@@ -260,6 +260,11 @@ namespace lisa
 				delete mod;
 				return false;
 			}
+		}
+		
+		// tell modules that all modules have been initialized
+		for (int i = 0; i < m_modules.size(); i++) {
+			m_modules[i]->postInitAll();
 		}
 
 		return true;
@@ -310,7 +315,7 @@ namespace lisa
 		const QVector<core::LoggingEntry>& entries = m_logging->getEntries();
 		for (int i = 0; i < entries.size(); i++)
 			mainWindow->newLoggingEntry(entries[i]);
-		QObject::connect(m_logging, &core::Logging::newLoggingEntry,
+		connect(m_logging, &core::Logging::newLoggingEntry,
 			mainWindow, &MainWindow::newLoggingEntry, Qt::QueuedConnection);
 		
 		// apply loaded properties for all modules
@@ -335,6 +340,79 @@ namespace lisa
 					it.value()->apply();
 					delete it.value();
 			}
+		}
+	}
+	
+	void System::msgRegister(QString id)
+	{
+		// get the sender
+		core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
+
+		if (module) {
+			QVector<core::Module*>& modules = m_registeredMessages[id];
+
+			// check if this module already registered for this specific message id
+			if (modules.size() > 0) {
+				for (int i = 0; i < modules.size(); i++) {
+					const core::Module* mod = modules[i];
+					if (mod == module) {
+						qWarning() << "module " << module->getModuleName() << " already registered for message " << id;
+						return;
+					}
+				}
+			}
+
+			qDebug() << "registering message " << id << " with module " << module->getModuleName();
+
+			// add registered message
+			modules.push_back(module);
+
+			// check for delayed messages, send them and remove from the list
+			for (QMap<core::Module*, QPair<QString, QVariant>>::iterator it = m_delayedMessages.begin();
+				it != m_delayedMessages.end(); it++) {
+					
+					// actually send it
+					if (it.value().first == id)
+						msgSend(id, it.value().second, false);
+			}
+		}
+	}
+
+	void System::msgSend(QString id, const QVariant& value, bool delay)
+	{
+		// check if this message has been registered
+		QMap<QString, QVector<core::Module*>>::const_iterator msg = m_registeredMessages.find(id);
+
+		if (msg != m_registeredMessages.end()) {
+			const QVector<core::Module*>& modules = msg.value();
+
+			// send this message to all registered modules
+			for (int i = 0; i < modules.size(); i++) {
+				core::Module* mod = modules[i];
+				mod->msgReceive(id, value);
+			}
+		}
+
+		// save the message for modules registering later
+		// NOTE: don't forget to emit msgClearDelayed() as soon as delayed messages are not needed anymore 
+		if (delay) {
+			// get the sender
+			core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
+
+			if (module)
+				m_delayedMessages[module] = QPair<QString, QVariant>(id, value);
+		}
+	}
+
+	void System::msgClearDelayed()
+	{
+		// get the sender
+		core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
+
+		// clear delayed messages for the calling module
+		QMap<core::Module*, QPair<QString, QVariant>>::iterator it = m_delayedMessages.find(module);
+		if (it != m_delayedMessages.end()) {
+			m_delayedMessages.erase(it);
 		}
 	}
 

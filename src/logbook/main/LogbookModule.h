@@ -4,6 +4,7 @@
 #include <core/main/Module.h>
 #include "../gui/WdgLogbook.h"
 #include "../gui/WdgToolbar.h"
+#include "../gui/WdgSidebar.h"
 
 namespace logbook
 {
@@ -11,7 +12,7 @@ namespace logbook
 		: public core::Module
 	{
 		Q_OBJECT
-	    Q_PLUGIN_METADATA(IID ModuleBase_iid)
+		Q_PLUGIN_METADATA(IID ModuleBase_iid)
 		Q_INTERFACES(core::ModuleBase)
 
 	public:
@@ -36,6 +37,7 @@ namespace logbook
 	private:
 		WdgLogbook*	m_logbook;
 		WdgToolbar* m_toolbar;
+		WdgSidebar* m_sidebar;
 	};
 }
 

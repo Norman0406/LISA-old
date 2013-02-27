@@ -4,6 +4,7 @@
 #include <core/main/Module.h>
 #include "../gui/WdgDigital.h"
 #include "../gui/WdgToolbar.h"
+#include "../gui/WdgSidebar.h"
 
 namespace digital
 {
@@ -11,7 +12,7 @@ namespace digital
 		: public core::Module
 	{
 		Q_OBJECT
-	    Q_PLUGIN_METADATA(IID ModuleBase_iid)
+		Q_PLUGIN_METADATA(IID ModuleBase_iid)
 		Q_INTERFACES(core::ModuleBase)
 
 	public:
@@ -36,6 +37,7 @@ namespace digital
 	private:
 		WdgDigital*	m_digital;
 		WdgToolbar* m_toolbar;
+		WdgSidebar* m_sidebar;
 	};
 }
 

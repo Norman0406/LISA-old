@@ -5,7 +5,7 @@
 namespace logbook
 {
 	LogbookModule::LogbookModule()
-		: Module(), m_logbook(0)
+		: Module(), m_logbook(0), m_toolbar(0), m_sidebar(0)
 	{
 	}
 
@@ -26,7 +26,7 @@ namespace logbook
 
 	bool LogbookModule::isInit() const
 	{
-		return true &&
+		return m_logbook && m_toolbar && m_sidebar &&
 			Module::isInit();
 	}
 
@@ -43,6 +43,12 @@ namespace logbook
 			return false;
 
 		addModuleWidget(core::Module::WT_TOOLBAR, getDisplayName(), m_toolbar);
+
+		m_sidebar = new WdgSidebar(parent);
+		if (!m_sidebar)
+			return false;
+
+		addModuleWidget(core::Module::WT_SIDEBAR, getDisplayName(), m_sidebar);
 		
 		return true;
 	}

@@ -2,13 +2,13 @@
 
 namespace digital
 {
-	WdgToolbar::WdgToolbar(QWidget* parent)
+    WdgToolbar::WdgToolbar(QWidget* parent)
 		: QWidget(parent)
 	{
 		setupUi(this);
 	}
 
-	WdgToolbar::~WdgToolbar(void)
+    WdgToolbar::~WdgToolbar(void)
 	{
 	}
 }

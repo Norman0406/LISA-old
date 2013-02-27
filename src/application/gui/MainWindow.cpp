@@ -20,7 +20,8 @@ namespace lisa
 		for (QList<QMenu*>::const_iterator it = entries.begin(); it != entries.end(); it++) {
 			QMenu* curMenu = *it;
 			if (curMenu->title() == "View") {
-				curMenu->addAction(appToolBar->toggleViewAction());
+				curMenu->addAction(appToolbar->toggleViewAction());
+				curMenu->addAction(appSidebar->toggleViewAction());
 				curMenu->addAction(appLogging->toggleViewAction());
 				curMenu->addSeparator();
 				break;

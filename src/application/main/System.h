@@ -16,16 +16,22 @@ namespace lisa
 
 	// singleton
 	class System
+		: public QObject
 	{
+		Q_OBJECT
+
 	public:
 		~System(void);
 
 		static System* init(int argc, char *argv[]);
 
 		int run();
-		
-		QVector<core::Module*>& getModules();
 
+	private slots:
+		void msgRegister(QString);
+		void msgSend(QString, const QVariant&, bool delay);
+		void msgClearDelayed();
+		
 	private:
 		System(int argc, char *argv[]);
 
@@ -46,6 +52,8 @@ namespace lisa
 		core::Logging*		m_logging;
 		QVector<core::Module*>	m_modules;
 		QMap<QString, QPair<QByteArray, QByteArray>> m_stateInfo;
+		QMap<QString, QVector<core::Module*>> m_registeredMessages;
+		QMap<core::Module*, QPair<QString, QVariant>> m_delayedMessages;
 	};
 }
 

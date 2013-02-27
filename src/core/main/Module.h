@@ -8,11 +8,6 @@
 #include "OptionsBase.h"
 #include "ModuleBase.h"
 
-namespace lisa
-{
-	class System;
-}
-
 namespace core
 {
 	class Module
@@ -38,7 +33,8 @@ namespace core
 		virtual ~Module(void);
 				
 		// initializing
-		bool init(lisa::System*, QWidget*);
+		bool init(QWidget*);
+		virtual bool postInitAll();
 		virtual bool isInit() const;
 		
 		const QVector<ModuleWidget*>& getModuleWidgets();
@@ -61,21 +57,24 @@ namespace core
 
 	public slots:
 		virtual void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
+		virtual void msgReceive(QString, const QVariant&);
 
 	signals:
 		void moduleWidgetAdded(WidgetType, const QString&, QWidget*);
+		void msgSend(QString, const QVariant&, bool delay = false);
+		void msgRegister(QString);
+		void msgClearDelayed();
 
 	protected:
 		Module();
 
-		lisa::System* getSystem();
 		void addModuleWidget(WidgetType, const QString&, QWidget*);
+		virtual void iPostInitAll();
 		
 		PropertyList m_properties;
 		
 	private:
 		bool			m_isInit;
-		lisa::System*	m_system;
 		QWidget*		m_parent;
 		QVector<ModuleWidget*> m_moduleWidgets;
 	};

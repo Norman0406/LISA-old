@@ -21,7 +21,6 @@ namespace digital
 		void computeSpectrum();
 
 	private:
-
 		AudioDeviceIn*		m_device;
 		AudioSpectrum*		m_spectrum;
 		QTimer*				m_timer;

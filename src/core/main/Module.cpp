@@ -1,11 +1,10 @@
 #include "Module.h"
 #include "../common/FileUtils.h"
-#include <application/main/System.h>
 
 namespace core
 {
 	Module::Module()
-		: m_system(0), m_isInit(false), m_parent(0)
+		: m_isInit(false), m_parent(0)
 	{
 		qRegisterMetaType<core::Module::WidgetType>("core::Module::WidgetType");
 	}
@@ -17,13 +16,8 @@ namespace core
 		m_moduleWidgets.clear();
 	}
 	
-	bool Module::init(lisa::System* sys, QWidget* parent)
-	{
-		if (!sys)
-			return false;
-
-		m_system = sys;
-
+	bool Module::init(QWidget* parent)
+	{		
 		// has it already been init?
 		if (m_isInit)
 			return false;
@@ -46,16 +40,32 @@ namespace core
 		return m_isInit;
 	}
 	
-	bool Module::isInit() const
+	bool Module::postInitAll()
 	{
-		return m_isInit && m_system;
-	}
-	
-	lisa::System* Module::getSystem()
-	{
-		return m_system;
+		if (!isInit()) {
+			qCritical() << "module not initialized before post init";
+			return false;
+		}
+
+		iPostInitAll();
+
+		if (!isInit()) {
+			qCritical() << "module not initialized after post init";
+			return false;
+		}
+
+		return true;
 	}
 
+	void Module::iPostInitAll()
+	{
+	}
+
+	bool Module::isInit() const
+	{
+		return m_isInit;
+	}
+	
 	void Module::addModuleWidget(WidgetType type, const QString& text, QWidget* widget)
 	{
 		ModuleWidget* modWdg = new ModuleWidget;
@@ -85,10 +95,18 @@ namespace core
 	
 	void Module::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
 	{
+		// overload this function to add option widgets to the main application
 		Q_UNUSED(widgets);
 		Q_UNUSED(parent);
 	}
 
+	void Module::msgReceive(QString id, const QVariant& value)
+	{
+		// overload this function to receive registered messages
+		Q_UNUSED(id);
+		Q_UNUSED(value);
+	}
+	
 	bool Module::loadProperties()
 	{
 		QString folder = FileUtils::openFolder(SF_CONFIG, false);

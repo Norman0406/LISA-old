@@ -5,14 +5,14 @@
 
 namespace digital
 {
-	class WdgToolbar
-		: public QWidget, public Ui::WdgToolbar
+    class WdgToolbar
+        : public QWidget, public Ui::WdgToolbar
 	{
 		Q_OBJECT
 
 	public:
-		WdgToolbar(QWidget* parent);
-		~WdgToolbar(void);
+        WdgToolbar(QWidget* parent);
+        ~WdgToolbar(void);
 	};
 }
 
