@@ -31,7 +31,7 @@ namespace lisa
 		bool restoreState(const QByteArray&);
 
 	public slots:
-		void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
+		void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>&, QWidget*);
 
 	protected:
 		bool iInit(QWidget*);

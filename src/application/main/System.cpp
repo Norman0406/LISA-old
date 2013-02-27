@@ -331,14 +331,13 @@ namespace lisa
 			core::Module* mod = m_modules[i];
 
 			// create an option widget with no parent (don't forget to delete later)
-			QMap<QString, core::OptionsBase*> widgets;
+			QVector<QPair<QString, core::OptionsBase*>> widgets;
 			mod->createOptionWidgets(widgets, 0);
 
 			// apply properties for each single option widget
-			for (QMap<QString, core::OptionsBase*>::const_iterator it = widgets.begin();
-				it != widgets.end(); it++) {
-					it.value()->apply();
-					delete it.value();
+			for (int i = 0; i < widgets.size(); i++) {
+				widgets[i].second->apply();
+				delete widgets[i].second;
 			}
 		}
 	}

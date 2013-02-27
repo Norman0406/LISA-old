@@ -20,27 +20,33 @@ namespace lisa
 		m_options.clear();
 		createOptionWidgets(m_options, this);
 
-		for (QMap<QString, core::OptionsBase*>::const_iterator it = m_options.begin();
-			it != m_options.end(); it++) {
-				QString text = it.key();
-				core::OptionsBase* widget = it.value();
+		for (int i = 0; i < m_options.size(); i++) {
+			QString text = m_options[i].first;
+			core::OptionsBase* widget = m_options[i].second;
 			
-				// add widget to stacked widget
-				stackedWidget->addWidget(widget);
-				optModules->addItem(text);
-
+			// add widget to stacked widget
+			stackedWidget->addWidget(widget);
+			optModules->addItem(text);
 		}
 		optModules->setCurrentRow(0);
 	}
 	
 	void DlgOptions::entryChanged(QString text)
 	{
-		if (m_options.find(text) == m_options.end()) {
+		core::OptionsBase* widget = 0;
+		for (int i = 0; i < m_options.size(); i++) {
+			QString val = m_options[i].first;
+			if (val == text) {
+				widget = m_options[i].second;
+				break;
+			}
+		}
+
+		if (!widget) {
 			qWarning() << "did not find entry " << text;
 			return;
 		}
-
-		core::OptionsBase* widget = m_options[text];
+		
 		optName->setText(text);
 		stackedWidget->setCurrentWidget(widget);
 	}
@@ -53,20 +59,14 @@ namespace lisa
 	
 	void DlgOptions::apply()
 	{
-		for (QMap<QString, core::OptionsBase*>::const_iterator it = m_options.begin();
-			it != m_options.end(); it++) {
-			core::OptionsBase* opt = it.value();
-			opt->apply();
-		}
+		for (int i = 0; i < m_options.size(); i++)
+			m_options[i].second->apply();
 	}
 
 	void DlgOptions::reject()
 	{
-		for (QMap<QString, core::OptionsBase*>::const_iterator it = m_options.begin();
-			it != m_options.end(); it++) {
-			core::OptionsBase* opt = it.value();
-			opt->cancel();
-		}
+		for (int i = 0; i < m_options.size(); i++)
+			m_options[i].second->cancel();
 		QDialog::reject();
 	}
 }

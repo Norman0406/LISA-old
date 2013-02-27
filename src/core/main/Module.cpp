@@ -93,7 +93,7 @@ namespace core
 		return result;
 	}
 	
-	void Module::createOptionWidgets(QMap<QString, core::OptionsBase*>& widgets, QWidget* parent)
+	void Module::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>& widgets, QWidget* parent)
 	{
 		// overload this function to add option widgets to the main application
 		Q_UNUSED(widgets);

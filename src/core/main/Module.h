@@ -56,7 +56,7 @@ namespace core
 		virtual bool restoreState(const QByteArray&) = 0;
 
 	public slots:
-		virtual void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
+		virtual void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>&, QWidget*);
 		virtual void msgReceive(QString, const QVariant&);
 
 	signals:

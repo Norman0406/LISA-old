@@ -31,10 +31,10 @@ namespace lisa
 		void reject();
 
 	signals:
-		void createOptionWidgets(QMap<QString, core::OptionsBase*>&, QWidget*);
+		void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>&, QWidget*);
 
 	private:
-		QMap<QString, core::OptionsBase*> m_options;
+		QVector<QPair<QString, core::OptionsBase*>> m_options;
 	};
 }
 
