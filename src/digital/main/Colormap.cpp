@@ -37,7 +37,7 @@ namespace digital
 		m_colors.clear();
 	}
 
-	void Colormap::accept(ColormapVisitor& visitor)
+    void Colormap::accept(ColormapVisitor& visitor)
 	{
 		clear();
 		visitor.visit(*this);

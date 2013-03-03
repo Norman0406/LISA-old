@@ -2,6 +2,7 @@
 #define CORE_LOGGING_H
 
 #include <QtCore/QtMessageHandler>
+#include <QtCore/QVector>
 #include <QtGui/QColor>
 
 namespace core

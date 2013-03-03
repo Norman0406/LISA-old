@@ -13,12 +13,15 @@ namespace digital
 		m_spectrum = new AudioSpectrum(4096, WT_BLACKMANHARRIS, this);
 
 		// create waterfall widget
-		waterfall->init(m_spectrum->getSpectrumSize());
+
+        m_waterfall = new WdgWaterfall(this);
+        groupBox_2->layout()->addWidget(m_waterfall);
+        m_waterfall->init(m_spectrum->getSpectrumSize());
 
 		// connect spectrum to widget
-		connect(m_spectrum, &AudioSpectrum::passbandChanged, waterfall, &WdgWaterfall::setPassband);
-		connect(m_spectrum, &AudioSpectrum::dataReady, waterfall, &WdgWaterfall::addSpectrum);
-		m_spectrum->init();
+        connect(m_spectrum, &AudioSpectrum::passbandChanged, m_waterfall, &WdgWaterfall::setPassband);
+        connect(m_spectrum, &AudioSpectrum::dataReady, m_waterfall, &WdgWaterfall::addSpectrum);
+        m_spectrum->init();
 		m_spectrum->setPassband(100, 3200);
 
 		// init audio device

@@ -4,6 +4,7 @@
 #include <core/common/Factory.h>
 #include "DatabaseXML.h"
 
+template <>
 QStringList Factory<logbook::Database>::getKeys()
 {
 	QStringList keys;
@@ -14,6 +15,7 @@ QStringList Factory<logbook::Database>::getKeys()
 	return QStringList();
 }
 
+template <>
 logbook::Database* Factory<logbook::Database>::createByKey(QString key)
 {
 	// create types by key
