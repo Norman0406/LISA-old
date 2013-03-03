@@ -25,6 +25,8 @@ LISA will provide the following components
 First install the Qt SDK and libfftw 
 `sudo apt-get install qt-sdk libfftw3-3`
 
+**Notice** Currently the ubuntu package maintainer did not update the `qt-sdk` package. Please consider downloading the follwing [bash scripts](http://qt-project.org/downloads).
+
 # Contributing
 LISA is currently in the pre-alpha state which means that concepts and APIs may change frequently. But if you want to contribute feel free to contact us. We are looking for OSX developers which will test the code on their machines and help us hunting (plattform-specific) bugs.
 
