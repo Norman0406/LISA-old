@@ -18,7 +18,7 @@ namespace digital
 		Colormap(int, QObject*);
 		~Colormap();
 
-		void accept(ColormapVisitor&);
+        void accept(ColormapVisitor&);
 		void addColor(int, const QColor&);
 		int getRange() const;
 		QColor getColorValue(int);

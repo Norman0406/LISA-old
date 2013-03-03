@@ -1,6 +1,7 @@
 #include "Exception.h"
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QApplication>
+#include <QtCore/QDebug>
 
 namespace core
 {
@@ -9,7 +10,7 @@ namespace core
 	{
 	}
 
-	Exception::~Exception()
+    Exception::~Exception() throw()
 	{
 	}
 

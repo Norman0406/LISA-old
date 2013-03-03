@@ -51,7 +51,7 @@ namespace digital
 		return true;
 	}
 		
-	void DigitalModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>& widgets, QWidget* parent)
+    void DigitalModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
 	{
 		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, parent)));
 	}

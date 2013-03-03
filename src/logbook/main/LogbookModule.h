@@ -29,7 +29,7 @@ namespace logbook
 		bool restoreState(const QByteArray&);
 
 	public slots:
-		void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>& widgets, QWidget* parent);
+        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent);
 		
 	protected:
 		bool iInit(QWidget*);

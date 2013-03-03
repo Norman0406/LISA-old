@@ -1,5 +1,7 @@
 #include "Logging.h"
 #include <QtCore/qlogging.h>
+#include <QtCore/QDebug>
+#include <QtCore/QDateTime>
 
 namespace core
 {
