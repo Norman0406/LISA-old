@@ -26,9 +26,11 @@ namespace digital
 	{
 		m_spectrumSize = specSize;
 
+        ColormapBlue colormap;
+        //ColormapFldigi colormap;
 		m_colorMap = new Colormap(256, this);
-		m_colorMap->accept(ColormapBlue());
-		//m_colorMap->accept(ColormapFldigi());
+        m_colorMap->accept(colormap);
+        //m_colorMap->accept(colormap);
 	}
 
 	void WdgWaterfall::setDrawOverlay(bool draw)

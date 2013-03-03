@@ -233,7 +233,7 @@ namespace digital
 		return m_spectrum.size();
 	}
 
-	const QVector<std::complex<double>>& AudioSpectrumWorker::getSpectrum()
+    const QVector<std::complex<double> >& AudioSpectrumWorker::getSpectrum()
 	{
 		// wait until data is ready
 		m_mutexOut.lock();

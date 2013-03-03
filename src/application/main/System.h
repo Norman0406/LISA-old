@@ -51,9 +51,9 @@ namespace lisa
 		LISAModule*			m_mainModule;
 		core::Logging*		m_logging;
 		QVector<core::Module*>	m_modules;
-		QMap<QString, QPair<QByteArray, QByteArray>> m_stateInfo;
-		QMap<QString, QVector<core::Module*>> m_registeredMessages;
-		QMap<core::Module*, QPair<QString, QVariant>> m_delayedMessages;
+        QMap<QString, QPair<QByteArray, QByteArray> > m_stateInfo;
+        QMap<QString, QVector<core::Module*> > m_registeredMessages;
+        QMap<core::Module*, QPair<QString, QVariant> > m_delayedMessages;
 	};
 }
 

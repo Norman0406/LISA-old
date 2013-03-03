@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>867</width>
-    <height>780</height>
+    <width>614</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,24 +23,12 @@
       <property name="title">
        <string>Waterfall</string>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="digital::WdgWaterfall" name="waterfall" native="true"/>
-       </item>
-      </layout>
+      <layout class="QGridLayout" name="gridLayout"/>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>digital::WdgWaterfall</class>
-   <extends>QWidget</extends>
-   <header>WdgWaterfall.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
  <slots>
