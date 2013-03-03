@@ -53,7 +53,7 @@ namespace logbook
 		return true;
 	}
 	
-	void LogbookModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*>>& widgets, QWidget* parent)
+    void LogbookModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
 	{
 		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, parent)));
 	}

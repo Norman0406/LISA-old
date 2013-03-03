@@ -331,7 +331,7 @@ namespace lisa
 			core::Module* mod = m_modules[i];
 
 			// create an option widget with no parent (don't forget to delete later)
-			QVector<QPair<QString, core::OptionsBase*>> widgets;
+            QVector<QPair<QString, core::OptionsBase*> > widgets;
 			mod->createOptionWidgets(widgets, 0);
 
 			// apply properties for each single option widget
@@ -367,7 +367,7 @@ namespace lisa
 			modules.push_back(module);
 
 			// check for delayed messages, send them and remove from the list
-			for (QMap<core::Module*, QPair<QString, QVariant>>::iterator it = m_delayedMessages.begin();
+            for (QMap<core::Module*, QPair<QString, QVariant> >::iterator it = m_delayedMessages.begin();
 				it != m_delayedMessages.end(); it++) {
 					
 					// actually send it
@@ -380,7 +380,7 @@ namespace lisa
 	void System::msgSend(QString id, const QVariant& value, bool delay)
 	{
 		// check if this message has been registered
-		QMap<QString, QVector<core::Module*>>::const_iterator msg = m_registeredMessages.find(id);
+        QMap<QString, QVector<core::Module*> >::const_iterator msg = m_registeredMessages.find(id);
 
 		if (msg != m_registeredMessages.end()) {
 			const QVector<core::Module*>& modules = msg.value();
@@ -409,7 +409,7 @@ namespace lisa
 		core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
 
 		// clear delayed messages for the calling module
-		QMap<core::Module*, QPair<QString, QVariant>>::iterator it = m_delayedMessages.find(module);
+        QMap<core::Module*, QPair<QString, QVariant> >::iterator it = m_delayedMessages.find(module);
 		if (it != m_delayedMessages.end()) {
 			m_delayedMessages.erase(it);
 		}

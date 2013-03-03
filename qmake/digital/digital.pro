@@ -30,6 +30,9 @@ win32 {
         QMAKE_POST_LINK += $${QMAKE_COPY} $$quote($${FILE}) $$quote($${BIN_DIR}) $$escape_expand(\\n\\t)
     }
 }
+linux {
+    LIBS += -L/usr/lib/x86_64-linux-gnu -lfftw3
+}
 
 PRECOMPILED_HEADER = ../../src/digital/main/precompiled.h
 

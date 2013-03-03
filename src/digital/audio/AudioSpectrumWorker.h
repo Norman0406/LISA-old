@@ -8,11 +8,10 @@
 #include <QtCore/QMutex>
 #include <QtCore/QWaitCondition>
 #include <complex>
+#include "AudioSpectrum.h"
 
 namespace digital
 {
-	enum AudioSpectrumWindow;
-
 	// threading method (not subclassing QThread) discussed in
 	// http://mayaposch.wordpress.com/2011/11/01/how-to-really-truly-use-qthreads-the-full-explanation/
 	// http://blog.qt.digia.com/blog/2010/06/17/youre-doing-it-wrong/
@@ -29,7 +28,7 @@ namespace digital
 
 		int getFFTSize() const;
 		int getSpectrumSize() const;
-		const QVector<std::complex<double>>& getSpectrum();
+        const QVector<std::complex<double> >& getSpectrum();
 		const QVector<double>& getSpectrumMagSq();
 		const QVector<double>& getSpectrumLog();
 
@@ -71,7 +70,7 @@ namespace digital
 		QByteArray m_bufferIn;
 		QAudioFormat m_format;
 
-		QVector<std::complex<double>> m_spectrum;	// complex spectrum
+        QVector<std::complex<double> > m_spectrum;	// complex spectrum
 		QVector<double> m_spectrumMagSq;	// squared magnitude spectrum
 		QVector<double> m_spectrumLog;		// logarithmic spectrum
 		QVector<double> m_spectrumPhase;	// spectrum's phase

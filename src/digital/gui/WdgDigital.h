@@ -4,6 +4,7 @@
 #include "../audio/AudioDeviceIn.h"
 #include "../audio/AudioSpectrum.h"
 #include "ui_WdgDigital.h"
+#include "WdgWaterfall.h"
 #include <QtCore/QTimer>
 
 namespace digital
@@ -24,6 +25,7 @@ namespace digital
 		AudioDeviceIn*		m_device;
 		AudioSpectrum*		m_spectrum;
 		QTimer*				m_timer;
+        WdgWaterfall*       m_waterfall;
 	};
 }
 

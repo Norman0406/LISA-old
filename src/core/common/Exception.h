@@ -14,7 +14,7 @@ namespace core
 	{
 	public:
 		Exception(QString module, QString funcInfo, QString message);
-		virtual ~Exception();
+        virtual ~Exception() throw();
 
 		const char* what() const throw();
 		void show();
