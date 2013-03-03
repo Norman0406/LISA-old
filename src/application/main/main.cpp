@@ -8,7 +8,9 @@ int main(int argc, char *argv[])
 	System* sys = System::init(argc, argv);
 	
 	// process application
-	int retVal = sys->run();
+	int retVal = 1;
+	if (sys)
+		retVal = sys->run();
 
 	delete sys;
 	return retVal;
