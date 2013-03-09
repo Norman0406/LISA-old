@@ -71,6 +71,7 @@ namespace lisa
 
 		// create options widget for dialog to create child widgets
 		connect(&dlg, &DlgOptions::createOptionWidgets, this, &MainWindow::createOptionWidgets);
+		connect(&dlg, &DlgOptions::enableModule, this, &MainWindow::enableModule);
 
 		dlg.init();
 		dlg.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);

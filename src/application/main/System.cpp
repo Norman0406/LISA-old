@@ -139,26 +139,12 @@ namespace lisa
 			qWarning() << "could not save system state to " << filename;
 	}
 	
-	void System::loadModulePlugins()
+	void System::detectModules()
 	{
 		qDebug() << "loading modules";
 
 		QDir modulesDir(qApp->applicationDirPath());
-
-		// necessary?
-/*#if defined(Q_OS_WIN)
-	 if (modulesDir.dirName().toLower() == "debug" || modulesDir.dirName().toLower() == "release")
-		 modulesDir.cdUp();
- #elif defined(Q_OS_MAC)
-	 if (modulesDir.dirName() == "MacOS") {
-		 modulesDir.cdUp();
-		 modulesDir.cdUp();
-		 modulesDir.cdUp();
-	 }
- #endif*/
-
-		//modulesDir.cd("modules");
-		
+				
 		// iterate over file list in the directory
 		QStringList files = modulesDir.entryList(QDir::Files);
 		for (int i = 0; i < files.size(); i++) {
@@ -170,7 +156,7 @@ namespace lisa
 			// try to load the file as a plugin
 			QPluginLoader loader(modulesDir.absoluteFilePath(filename));
 			QObject* module = loader.instance();
-
+						
 			// check if the interface matches
 			if (module) {
 				core::ModuleBase* modInterface = qobject_cast<core::ModuleBase*>(module);
@@ -178,10 +164,115 @@ namespace lisa
 				// add the plugin to the list
 				if (modInterface) {
 					qDebug() << "found module: " << modInterface->getModuleName() << " in " << filename;
-					m_modules.push_back(static_cast<core::Module*>(modInterface));
+
+					m_detectedModules[modInterface->getModuleName()] = loader.fileName();
+					std::string tmp = loader.fileName().toStdString();
+					delete modInterface;
 				}
 			}
 		}
+	}
+
+	void System::loadModules()
+	{
+		for (QMap<QString, QString>::const_iterator it = m_detectedModules.begin();
+			it != m_detectedModules.end(); it++) {
+				// TODO: skip modules which are not enabled at runtime (read from settings)
+
+				loadModule(it.value());
+		}
+	}
+
+	core::Module* System::loadModule(const QString& filename)
+	{
+		// try to load the file as a plugin
+		QPluginLoader loader(filename);
+		QObject* module = loader.instance();
+						
+		// check if the interface matches
+		if (module) {
+			core::ModuleBase* modInterface = qobject_cast<core::ModuleBase*>(module);
+
+			// add the plugin to the list
+			if (modInterface) {
+				m_modules.push_back(static_cast<core::Module*>(modInterface));
+				return (core::Module*)modInterface;
+			}
+		}
+
+		return 0;
+	}
+	
+	void System::enableModule(const QString& moduleName, bool enabled)
+	{
+		if (moduleName == m_mainModule->getModuleName())
+			return;
+
+		if (enabled) {
+			if (isModuleLoaded(moduleName))
+				return;
+
+			// create the module instance and init it
+			QMap<QString, QString>::const_iterator it = m_detectedModules.find(moduleName);
+			if (it == m_detectedModules.end())
+				qWarning() << "could not find module " << moduleName;
+			else {
+				core::Module* module = loadModule(it.value());
+				
+				if (!initModule(module)) {
+					removeModule(module);
+					delete module;
+					qCritical() << "could not initialize module " << moduleName;
+					return;
+				}
+
+				// NOTE: or tell all other modules?
+				module->postInitAll();
+			}
+		}
+		else {
+			if (!isModuleLoaded(moduleName))
+				return;
+
+			// find the module and delete it's instance
+			bool deleted = false;
+			for (QVector<core::Module*>::iterator it = m_modules.begin(); it != m_modules.end();) {
+				if ((*it)->getModuleName() == moduleName) {
+					delete *it;
+					it = m_modules.erase(it);
+					deleted = true;
+					break;
+				}
+				else
+					it++;
+			}
+
+			if (!deleted)
+				qWarning() << "could not find module " << moduleName;
+		}
+	}
+
+	void System::fillDetectedModule(QVector<QString>& modules)
+	{
+		// push module names to vector
+		for (QMap<QString, QString>::const_iterator it = m_detectedModules.begin();
+			it != m_detectedModules.end(); it++) {
+				modules.push_back(it.key());
+		}
+	}
+	
+	bool System::isModuleLoaded(const QString& moduleName)
+	{
+		for (int i = 0; i < m_modules.size(); i++) {
+			if (m_modules[i]->getModuleName() == moduleName)
+				return true;
+		}
+		return false;
+	}
+
+	void System::moduleLoaded(const QString& moduleName, bool& loaded)
+	{
+		loaded = isModuleLoaded(moduleName);
 	}
 	
 	bool System::removeModule(core::Module* module)
@@ -225,7 +316,6 @@ namespace lisa
 		// register message handling functions with the system
 		connect(module, &core::Module::msgRegister, this, &System::msgRegister);
 		connect(module, &core::Module::msgSend, this, &System::msgSend);
-		connect(module, &core::Module::msgClearDelayed, this, &System::msgClearDelayed);
 
 		// connect module to the options dialog in the main window			
 		connect(mainWindow, &MainWindow::createOptionWidgets, module, &core::Module::createOptionWidgets);
@@ -300,11 +390,17 @@ namespace lisa
 			qCritical() << "could not create main module";
 			return false;
 		}
+		connect(m_mainModule, &LISAModule::fillDetectedModules, this, &System::fillDetectedModule,
+			Qt::DirectConnection);
+		connect(m_mainModule, &LISAModule::moduleLoaded, this, &System::moduleLoaded,
+			Qt::DirectConnection);
+		connect(m_mainModule, &LISAModule::enableModule, this, &System::enableModule);
 
 		m_modules.push_back(m_mainModule);
 		
 		// load other plugins
-		loadModulePlugins();
+		detectModules();
+		loadModules();
 		
 		// init modules
 		if (!initModules())
@@ -317,6 +413,8 @@ namespace lisa
 			mainWindow->newLoggingEntry(entries[i]);
 		connect(m_logging, &core::Logging::newLoggingEntry,
 			mainWindow, &MainWindow::newLoggingEntry, Qt::QueuedConnection);
+		/*connect(mainWindow, &MainWindow::enableModule,
+			this, &System::enableModule);*/
 		
 		// apply loaded properties for all modules
 		applyProperties();
@@ -365,19 +463,10 @@ namespace lisa
 
 			// add registered message
 			modules.push_back(module);
-
-			// check for delayed messages, send them and remove from the list
-            for (QMap<core::Module*, QPair<QString, QVariant> >::iterator it = m_delayedMessages.begin();
-				it != m_delayedMessages.end(); it++) {
-					
-					// actually send it
-					if (it.value().first == id)
-						msgSend(id, it.value().second, false);
-			}
 		}
 	}
 
-	void System::msgSend(QString id, const QVariant& value, bool delay)
+	void System::msgSend(QString id, const QVariant& value)
 	{
 		// check if this message has been registered
         QMap<QString, QVector<core::Module*> >::const_iterator msg = m_registeredMessages.find(id);
@@ -390,28 +479,6 @@ namespace lisa
 				core::Module* mod = modules[i];
 				mod->msgReceive(id, value);
 			}
-		}
-
-		// save the message for modules registering later
-		// NOTE: don't forget to emit msgClearDelayed() as soon as delayed messages are not needed anymore 
-		if (delay) {
-			// get the sender
-			core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
-
-			if (module)
-				m_delayedMessages[module] = QPair<QString, QVariant>(id, value);
-		}
-	}
-
-	void System::msgClearDelayed()
-	{
-		// get the sender
-		core::Module* module = (core::Module*)qobject_cast<core::ModuleBase*>(sender());
-
-		// clear delayed messages for the calling module
-        QMap<core::Module*, QPair<QString, QVariant> >::iterator it = m_delayedMessages.find(module);
-		if (it != m_delayedMessages.end()) {
-			m_delayedMessages.erase(it);
 		}
 	}
 

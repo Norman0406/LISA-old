@@ -11,8 +11,10 @@ namespace core
 
 	Module::~Module(void)
 	{
-		for (int i = 0; i < m_moduleWidgets.size(); i++)
+		for (int i = 0; i < m_moduleWidgets.size(); i++) {
+			m_moduleWidgets[i]->widget->deleteLater();
 			delete m_moduleWidgets[i];
+		}
 		m_moduleWidgets.clear();
 	}
 	

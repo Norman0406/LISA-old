@@ -5,8 +5,8 @@
 
 namespace lisa
 {
-	WdgOptions::WdgOptions(core::PropertyList* properties, QWidget* parent)
-		: OptionsBase(properties, parent)
+	WdgOptions::WdgOptions(core::PropertyList* properties, const LISAModule* module, QWidget* parent)
+		: OptionsBase(properties, module, parent)
 	{
 		setupUi(this);
 		
@@ -32,6 +32,32 @@ namespace lisa
 	{
 	}
 
+	void WdgOptions::init()
+	{
+		// retrieve detected modules
+		QVector<QString> detectedModules;
+		emit fillDetectedModules(detectedModules);
+		for (int i = 0; i < detectedModules.size(); i++) {
+			QListWidgetItem* item = new QListWidgetItem(lstModules);
+			item->setText(detectedModules[i]);
+			
+			// set checked state only if module is currently loaded
+			bool loaded = false;
+			emit moduleLoaded(detectedModules[i], loaded);
+
+			if (loaded) {
+				item->setTextColor(Qt::black);
+				item->setCheckState(Qt::Checked);
+			}
+			else {
+				item->setTextColor(Qt::darkGray);
+				item->setCheckState(Qt::Unchecked);
+			}
+
+			lstModules->addItem(item);
+		}
+	}
+
 	void WdgOptions::initStyle()
 	{
 		QString curName = m_propStyle ? m_propStyle->getValue() : "";
@@ -54,5 +80,19 @@ namespace lisa
 				
 		if (!selected)
 			m_propStyle->setToDefault();
+	}
+		
+	void WdgOptions::deactivate(QListWidgetItem* item)
+	{		
+		if (item && this->isVisible()) {
+			if (item->checkState() == Qt::Checked) {
+				item->setTextColor(Qt::black);
+				emit enableModule(item->text(), true);
+			}
+			else {
+				item->setTextColor(Qt::darkGray);
+				emit enableModule(item->text(), false);
+			}
+		}
 	}
 }

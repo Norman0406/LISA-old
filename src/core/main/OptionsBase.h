@@ -6,6 +6,7 @@
 namespace core
 {
 	class PropertyList;
+	class Module;
 
 	// base class for a widget inside the options dialog
 	class OptionsBase
@@ -18,11 +19,13 @@ namespace core
 
 		virtual void apply() = 0;
 		virtual void cancel() = 0;
+		const Module* getModule() const;
 
 	protected:
-		OptionsBase(PropertyList*, QWidget* parent);
+		OptionsBase(PropertyList*, const Module*, QWidget* parent);
 
-		PropertyList* m_properties;
+		PropertyList*	m_properties;
+		const Module*	m_module;
 	};
 
 	// a default options widgets
@@ -30,7 +33,7 @@ namespace core
 		: public OptionsBase
 	{
 	public:
-		WdgOptionsDefault(QWidget*);
+		WdgOptionsDefault(const Module*, QWidget*);
 		~WdgOptionsDefault();
 		
 		void apply();

@@ -4,6 +4,7 @@
 #include <QtCore/qmath.h>
 #include <QtCore/qnumeric.h>
 #include <QtCore/QThread>
+#include <QtCore/QDebug>
 
 namespace digital
 {
@@ -17,16 +18,17 @@ namespace digital
 		connect(m_fftThread, &QThread::started, m_fftWorker, &AudioSpectrumWorker::run);
 		connect(m_fftWorker, &AudioSpectrumWorker::finished, m_fftThread, &QThread::quit);
 		connect(m_fftWorker, &AudioSpectrumWorker::finished, m_fftWorker, &AudioSpectrumWorker::deleteLater);
-		connect(m_fftThread, &QThread::finished, m_fftThread, &AudioSpectrumWorker::deleteLater);
+		connect(m_fftThread, &QThread::finished, m_fftThread, &QThread::deleteLater);
 		connect(m_fftWorker, &AudioSpectrumWorker::dataReady, this, &AudioSpectrum::spectrumReady);
 	}
 
 	AudioSpectrum::~AudioSpectrum()
 	{
-		delete m_fftWorker;
-		delete m_fftThread;
+		m_fftWorker->stop();
+		m_fftThread->quit();	// wouldn't be necessary if finished would be called properly
+		m_fftThread->wait();
 	}
-
+	
 	void AudioSpectrum::init()
 	{
 		// get default passband
@@ -35,13 +37,15 @@ namespace digital
 		emit passbandChanged(passMin, passMax);
 
 		// start thread
-		m_fftThread->start();
+		if (m_fftThread)
+			m_fftThread->start();
 	}
 
 	void AudioSpectrum::compute(const QAudioFormat& format, const QByteArray& buffer)
 	{
 		// start processing FFT
-		m_fftWorker->startFFT(format, buffer);
+		if (m_fftWorker)
+			m_fftWorker->startFFT(format, buffer);
 	}
 	
 	void AudioSpectrum::spectrumReady()
@@ -61,22 +65,25 @@ namespace digital
 
 	int AudioSpectrum::getFFTSize() const
 	{
-		return m_fftWorker->getFFTSize();
+		return m_fftWorker ? m_fftWorker->getFFTSize() : 0;
 	}
 	
 	int AudioSpectrum::getSpectrumSize() const
 	{
-		return m_fftWorker->getSpectrumSize();
+		return m_fftWorker ? m_fftWorker->getSpectrumSize() : 0;
 	}
 	
 	void AudioSpectrum::setPassband(int min, int max)
 	{
-		m_fftWorker->setPassband(min, max);
-		emit passbandChanged(min, max);
+		if (m_fftWorker) {
+			m_fftWorker->setPassband(min, max);
+			emit passbandChanged(min, max);
+		}
 	}
 
 	void AudioSpectrum::getPassband(int& min, int& max) const
 	{
-		m_fftWorker->getPassband(min, max);
+		if (m_fftWorker)
+			m_fftWorker->getPassband(min, max);
 	}
 }

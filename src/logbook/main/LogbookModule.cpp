@@ -11,7 +11,6 @@ namespace logbook
 
 	LogbookModule::~LogbookModule(void)
 	{
-		delete m_logbook;
 	}
 		
 	QString	LogbookModule::getModuleName() const
@@ -55,7 +54,7 @@ namespace logbook
 	
     void LogbookModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
 	{
-		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, parent)));
+		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, this, parent)));
 	}
 
 	QByteArray LogbookModule::saveGeometry()

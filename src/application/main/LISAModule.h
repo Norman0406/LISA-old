@@ -33,6 +33,11 @@ namespace lisa
 	public slots:
         void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
 
+	signals:
+		void fillDetectedModules(QVector<QString>&);
+		void moduleLoaded(const QString&, bool&);
+		void enableModule(const QString&, bool);
+
 	protected:
 		bool iInit(QWidget*);
 

@@ -60,7 +60,14 @@ namespace lisa
 	
     void LISAModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
 	{
-		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, parent)));
+		WdgOptions* wdgOpt = new WdgOptions(&m_properties, this, parent);
+		connect(wdgOpt, &WdgOptions::fillDetectedModules, this, &LISAModule::fillDetectedModules,
+			Qt::DirectConnection);
+		connect(wdgOpt, &WdgOptions::moduleLoaded, this, &LISAModule::moduleLoaded,
+			Qt::DirectConnection);
+		connect(wdgOpt, &WdgOptions::enableModule, this, &LISAModule::enableModule);
+		wdgOpt->init();
+		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), wdgOpt));
 	}
 	
 	MainWindow* LISAModule::getWindow()

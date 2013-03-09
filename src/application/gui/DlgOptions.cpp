@@ -26,7 +26,11 @@ namespace lisa
 			
 			// add widget to stacked widget
 			stackedWidget->addWidget(widget);
-			optModules->addItem(text);
+
+			QListWidgetItem* item = new QListWidgetItem(optModules);
+			item->setText(text);
+
+			optModules->addItem(item);
 		}
 		optModules->setCurrentRow(0);
 	}
@@ -50,6 +54,36 @@ namespace lisa
 		optName->setText(text);
 		stackedWidget->setCurrentWidget(widget);
 	}
+
+	/*void DlgOptions::deactivate(QListWidgetItem* item)
+	{
+		// TODO: don't enable deactivation of main application module
+		
+		core::OptionsBase* widget = 0;
+		for (int i = 0; i < m_options.size(); i++) {
+			QString val = m_options[i].first;
+			if (val == item->text()) {
+				widget = m_options[i].second;
+				break;
+			}
+		}
+
+		if (!widget) {
+			qWarning() << "did not find entry " << item->text();
+			return;
+		}
+
+		if (item && this->isVisible()) {
+			if (item->checkState() == Qt::Checked) {
+				item->setTextColor(Qt::black);
+				emit enableModule(widget->getModule()->getModuleName(), true);
+			}
+			else {
+				item->setTextColor(Qt::darkGray);
+				emit enableModule(widget->getModule()->getModuleName(), false);
+			}
+		}
+	}*/
 	
 	void DlgOptions::accept()
 	{

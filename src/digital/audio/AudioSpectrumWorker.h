@@ -24,7 +24,7 @@ namespace digital
 		AudioSpectrumWorker(int, AudioSpectrumWindow);
 		~AudioSpectrumWorker();
 
-		void terminate();
+		void stop();
 
 		int getFFTSize() const;
 		int getSpectrumSize() const;

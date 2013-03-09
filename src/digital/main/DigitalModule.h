@@ -6,6 +6,10 @@
 #include "../gui/WdgToolbar.h"
 #include "../gui/WdgSidebar.h"
 
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
+#include <QtCore/QDebug>
+
 namespace digital
 {
 	class DigitalModule

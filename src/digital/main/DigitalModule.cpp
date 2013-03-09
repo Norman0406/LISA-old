@@ -47,13 +47,13 @@ namespace digital
 			return false;
 
 		addModuleWidget(core::Module::WT_SIDEBAR, getDisplayName(), m_sidebar);
-
+				
 		return true;
 	}
-		
+			
     void DigitalModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
 	{
-		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, parent)));
+		widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), new WdgOptions(&m_properties, this, parent)));
 	}
 
 	QByteArray DigitalModule::saveGeometry()

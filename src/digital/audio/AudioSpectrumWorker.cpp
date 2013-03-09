@@ -38,9 +38,10 @@ namespace digital
 
 	AudioSpectrumWorker::~AudioSpectrumWorker()
 	{
+		stop();
 	}
 	
-	void AudioSpectrumWorker::terminate()
+	void AudioSpectrumWorker::stop()
 	{
 		m_mutexIn.lock();
 		m_terminate = true;
@@ -168,7 +169,7 @@ namespace digital
 				m_isOutputReady = true;
 				m_mutexOut.unlock();
 				m_outputReady.wakeAll();
-
+				
 				// signal that data is ready
 				emit dataReady();
 			}

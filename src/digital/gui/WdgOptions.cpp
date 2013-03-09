@@ -2,8 +2,8 @@
 
 namespace digital
 {
-	WdgOptions::WdgOptions(core::PropertyList* properties, QWidget* parent)
-		: OptionsBase(properties, parent)
+	WdgOptions::WdgOptions(core::PropertyList* properties, const DigitalModule* module, QWidget* parent)
+		: OptionsBase(properties, module, parent)
 	{
 		setupUi(this);
 	}

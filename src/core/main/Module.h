@@ -61,9 +61,8 @@ namespace core
 
 	signals:
 		void moduleWidgetAdded(WidgetType, const QString&, QWidget*);
-		void msgSend(QString, const QVariant&, bool delay = false);
+		void msgSend(QString, const QVariant&);
 		void msgRegister(QString);
-		void msgClearDelayed();
 
 	protected:
 		Module();

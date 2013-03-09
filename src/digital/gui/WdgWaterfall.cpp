@@ -16,6 +16,12 @@ namespace digital
 		m_redrawTimer->setInterval(updateInterval);
 		connect(m_redrawTimer, &QTimer::timeout, this, &WdgWaterfall::redraw);
 		m_redrawTimer->start();
+
+		// set initial waterfall size
+		m_size = parent->size();
+		QSize waterfallSize(m_size.width() - m_border * 2, m_size.height() - m_overlayFrq.height());
+		m_waterfallPixmap = QPixmap(waterfallSize);
+		m_waterfallPixmap.fill(Qt::black);
 	}
 
 	WdgWaterfall::~WdgWaterfall(void)
