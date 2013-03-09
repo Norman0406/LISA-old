@@ -5,102 +5,113 @@
 
 namespace lisa
 {
-	DlgOptions::DlgOptions()
-		: QDialog(0)
-	{
-		setupUi(this);
-	}
+    DlgOptions::DlgOptions()
+        : QDialog(0)
+    {
+        setupUi(this);
+    }
 
-	DlgOptions::~DlgOptions()
-	{
-	}
+    DlgOptions::~DlgOptions()
+    {
+    }
 
-	void DlgOptions::init()
-	{
-		m_options.clear();
-		createOptionWidgets(m_options, this);
+    void DlgOptions::init()
+    {
+        m_options.clear();
+        optModules->clear();
+        createOptionWidgets(m_options, this);
 
-		for (int i = 0; i < m_options.size(); i++) {
-			QString text = m_options[i].first;
-			core::OptionsBase* widget = m_options[i].second;
-			
-			// add widget to stacked widget
-			stackedWidget->addWidget(widget);
+        for (int i = 0; i < m_options.size(); i++) {
+            QString text = m_options[i].first;
+            core::OptionsBase* widget = m_options[i].second;
 
-			QListWidgetItem* item = new QListWidgetItem(optModules);
-			item->setText(text);
+            connect(widget, &core::OptionsBase::destroyed, this, &DlgOptions::removeWidget);
+            
+            // add widget to stacked widget
+            stackedWidget->addWidget(widget);
 
-			optModules->addItem(item);
-		}
-		optModules->setCurrentRow(0);
-	}
-	
-	void DlgOptions::entryChanged(QString text)
-	{
-		core::OptionsBase* widget = 0;
-		for (int i = 0; i < m_options.size(); i++) {
-			QString val = m_options[i].first;
-			if (val == text) {
-				widget = m_options[i].second;
-				break;
-			}
-		}
+            QListWidgetItem* item = new QListWidgetItem(optModules);
+            item->setText(text);
 
-		if (!widget) {
-			qWarning() << "did not find entry " << text;
-			return;
-		}
-		
-		optName->setText(text);
-		stackedWidget->setCurrentWidget(widget);
-	}
+            optModules->addItem(item);
+        }
+        optModules->setCurrentRow(0);
+    }
+    
+    void DlgOptions::entryChanged(QString text)
+    {
+        core::OptionsBase* widget = 0;
+        for (int i = 0; i < m_options.size(); i++) {
+            QString val = m_options[i].first;
+            if (val == text) {
+                widget = m_options[i].second;
+                break;
+            }
+        }
 
-	/*void DlgOptions::deactivate(QListWidgetItem* item)
-	{
-		// TODO: don't enable deactivation of main application module
-		
-		core::OptionsBase* widget = 0;
-		for (int i = 0; i < m_options.size(); i++) {
-			QString val = m_options[i].first;
-			if (val == item->text()) {
-				widget = m_options[i].second;
-				break;
-			}
-		}
+        if (!widget) {
+            qWarning() << "did not find entry " << text;
+            return;
+        }
+        
+        optName->setText(text);
+        stackedWidget->setCurrentWidget(widget);
+    }
+    
+    void DlgOptions::addWidget()
+    {
+        QObject* wdg = sender();
 
-		if (!widget) {
-			qWarning() << "did not find entry " << item->text();
-			return;
-		}
+        if (wdg) {
+            // UNDONE
+        }
+    }
 
-		if (item && this->isVisible()) {
-			if (item->checkState() == Qt::Checked) {
-				item->setTextColor(Qt::black);
-				emit enableModule(widget->getModule()->getModuleName(), true);
-			}
-			else {
-				item->setTextColor(Qt::darkGray);
-				emit enableModule(widget->getModule()->getModuleName(), false);
-			}
-		}
-	}*/
-	
-	void DlgOptions::accept()
-	{
-		apply();
-		QDialog::accept();
-	}
-	
-	void DlgOptions::apply()
-	{
-		for (int i = 0; i < m_options.size(); i++)
-			m_options[i].second->apply();
-	}
+    void DlgOptions::removeWidget()
+    {
+        QObject* wdg = sender();
 
-	void DlgOptions::reject()
-	{
-		for (int i = 0; i < m_options.size(); i++)
-			m_options[i].second->cancel();
-		QDialog::reject();
-	}
+        if (wdg && isVisible()) {
+            core::OptionsBase* widget = 0;
+            for (QVector<QPair<QString, core::OptionsBase*> >::iterator it = m_options.begin();
+                it != m_options.end(); it++) {
+                    if (it->second == wdg) {
+                        widget = it->second;
+
+                        // remove from internal list
+                        m_options.erase(it);
+
+                        break;
+                    }
+            }
+            
+            if (!widget) {
+                qWarning() << "did not find entry";
+                return;
+            }
+                        
+            // remove item from list
+            QListWidgetItem* item = optModules->item(stackedWidget->indexOf(widget));
+            delete item;
+        }
+    }
+    
+    void DlgOptions::accept()
+    {
+        apply();
+        QDialog::accept();
+    }
+    
+    void DlgOptions::apply()
+    {
+        for (int i = 0; i < m_options.size(); i++)
+            m_options[i].second->apply();
+    }
+
+    void DlgOptions::reject()
+    {
+        for (int i = 0; i < m_options.size(); i++)
+            m_options[i].second->cancel();
+        QDialog::reject();
+    }
 }

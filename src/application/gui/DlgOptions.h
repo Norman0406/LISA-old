@@ -5,39 +5,39 @@
 
 namespace core
 {
-	class Module;
-	class ModuleBase;
-	class OptionsBase;
+    class Module;
+    class ModuleBase;
+    class OptionsBase;
 }
 
 namespace lisa
 {
-	// options dialog
-	class DlgOptions
-		: public QDialog, public Ui::DlgOptions
-	{
-		Q_OBJECT
+    // options dialog
+    class DlgOptions
+        : public QDialog, public Ui::DlgOptions
+    {
+        Q_OBJECT
 
-	public:
-		DlgOptions();
-		~DlgOptions();
+    public:
+        DlgOptions();
+        ~DlgOptions();
 
-		void init();
+        void init();
 
-	public slots:
-		void entryChanged(QString);
-		//void deactivate(QListWidgetItem*);
-		void accept();
-		void apply();
-		void reject();
+    public slots:
+        void entryChanged(QString);
+        void addWidget();
+        void removeWidget();
+        void accept();
+        void apply();
+        void reject();
 
-	signals:
-		void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
-		void enableModule(const QString&, bool);
+    signals:
+        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
 
-	private:
-		QVector<QPair<QString, core::OptionsBase*> > m_options;
-	};
+    private:
+        QVector<QPair<QString, core::OptionsBase*> > m_options;
+    };
 }
 
 #endif // LISA_DLGOPTIONS_H

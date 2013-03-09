@@ -5,40 +5,39 @@
 
 namespace core
 {
-	class PropertyList;
-	class Module;
+    class PropertyList;
+    class Module;
 
-	// base class for a widget inside the options dialog
-	class OptionsBase
-		: public QWidget
-	{
-		Q_OBJECT
+    // base class for a widget inside the options dialog
+    class OptionsBase
+        : public QWidget
+    {
+        Q_OBJECT
 
-	public:
-		virtual ~OptionsBase();
+    public:
+        virtual ~OptionsBase();
+        
+        virtual void apply() = 0;
+        virtual void cancel() = 0;
+        
+    protected:
+        OptionsBase(PropertyList*, const Module*, QWidget* parent);
 
-		virtual void apply() = 0;
-		virtual void cancel() = 0;
-		const Module* getModule() const;
+        PropertyList*	m_properties;
+        const Module*	m_module;
+    };
 
-	protected:
-		OptionsBase(PropertyList*, const Module*, QWidget* parent);
-
-		PropertyList*	m_properties;
-		const Module*	m_module;
-	};
-
-	// a default options widgets
-	class WdgOptionsDefault
-		: public OptionsBase
-	{
-	public:
-		WdgOptionsDefault(const Module*, QWidget*);
-		~WdgOptionsDefault();
-		
-		void apply();
-		void cancel();
-	};
+    // a default options widgets
+    class WdgOptionsDefault
+        : public OptionsBase
+    {
+    public:
+        WdgOptionsDefault(const Module*, QWidget*);
+        ~WdgOptionsDefault();
+        
+        void apply();
+        void cancel();
+    };
 }
 
 #endif // CORE_OPTIONSBASE_H

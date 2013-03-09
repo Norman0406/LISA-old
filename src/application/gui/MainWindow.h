@@ -27,7 +27,7 @@ namespace lisa
 		
 	signals:
         void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
-		void enableModule(const QString&, bool);
+		void rebuildSettingsPages();
 		
 	protected:
 		bool iInit();
