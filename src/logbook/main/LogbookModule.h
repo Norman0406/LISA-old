@@ -1,3 +1,23 @@
+/***********************************************************************
+*
+* LISA: Lightweight Integrated System for Amateur Radio
+* Copyright (C) 2013 Norman Link <norman.link@gmx.net>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+***********************************************************************/
+
 #ifndef LOGBOOK_LOGBOOKMODULE_H
 #define LOGBOOK_LOGBOOKMODULE_H
 
@@ -8,37 +28,37 @@
 
 namespace logbook
 {
-	class LogbookModule
-		: public core::Module
-	{
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID ModuleBase_iid)
-		Q_INTERFACES(core::ModuleBase)
+    class LogbookModule
+        : public core::Module
+    {
+        Q_OBJECT
+        Q_PLUGIN_METADATA(IID ModuleBase_iid)
+        Q_INTERFACES(core::ModuleBase)
 
-	public:
-		LogbookModule();
-		~LogbookModule(void);
+    public:
+        LogbookModule();
+        ~LogbookModule(void);
 
-		QString	getModuleName() const;
-		QString getDisplayName() const;
-		bool isInit() const;
-				
-		QByteArray saveGeometry();
-		bool restoreGeometry(const QByteArray&);
-		QByteArray saveState();
-		bool restoreState(const QByteArray&);
+        QString	getModuleName() const;
+        QString getDisplayName() const;
+        bool isInit() const;
+                
+        QByteArray saveGeometry();
+        bool restoreGeometry(const QByteArray&);
+        QByteArray saveState();
+        bool restoreState(const QByteArray&);
 
-	public slots:
+    public slots:
         void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent);
-		
-	protected:
-		bool iInit(QWidget*);
+        
+    protected:
+        bool iInit(QWidget*);
 
-	private:
-		WdgLogbook*	m_logbook;
-		WdgToolbar* m_toolbar;
-		WdgSidebar* m_sidebar;
-	};
+    private:
+        WdgLogbook*	m_logbook;
+        WdgToolbar* m_toolbar;
+        WdgSidebar* m_sidebar;
+    };
 }
 
 #endif // LOGBOOK_LOGBOOKMODULE_H

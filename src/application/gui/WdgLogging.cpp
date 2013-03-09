@@ -1,21 +1,41 @@
+/***********************************************************************
+*
+* LISA: Lightweight Integrated System for Amateur Radio
+* Copyright (C) 2013 Norman Link <norman.link@gmx.net>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+***********************************************************************/
+
 #include "WdgLogging.h"
 
 namespace lisa
 {
-	WdgLogging::WdgLogging(QWidget* parent)
-		: QWidget(parent)
-	{
-		setupUi(this);
-	}
+    WdgLogging::WdgLogging(QWidget* parent)
+        : QWidget(parent)
+    {
+        setupUi(this);
+    }
 
-	WdgLogging::~WdgLogging(void)
-	{
-	}
-	
-	void WdgLogging::addLogEntry(const core::LoggingEntry& entry)
-	{
-		logViewer->setTextColor(entry.m_textCol);
-		logViewer->append(entry.m_line);
-		//logViewer->moveCursor(QTextCursor::StartOfLine);
-	}
+    WdgLogging::~WdgLogging(void)
+    {
+    }
+    
+    void WdgLogging::addLogEntry(const core::LoggingEntry& entry)
+    {
+        logViewer->setTextColor(entry.m_textCol);
+        logViewer->append(entry.m_line);
+        //logViewer->moveCursor(QTextCursor::StartOfLine);
+    }
 }
