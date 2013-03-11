@@ -22,8 +22,8 @@
 
 namespace logbook
 {
-    WdgOptions::WdgOptions(core::PropertyList* properties, const LogbookModule* module, QWidget* parent)
-        : OptionsBase(properties, module, parent)
+    WdgOptions::WdgOptions(core::PropertyList* properties, QWidget* parent)
+        : OptionsBase(properties, parent)
     {
         setupUi(this);
     }

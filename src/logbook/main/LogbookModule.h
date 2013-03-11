@@ -25,6 +25,7 @@
 #include "../gui/WdgLogbook.h"
 #include "../gui/WdgToolbar.h"
 #include "../gui/WdgSidebar.h"
+#include "../gui/WdgOptions.h"
 
 namespace logbook
 {
@@ -47,17 +48,21 @@ namespace logbook
         bool restoreGeometry(const QByteArray&);
         QByteArray saveState();
         bool restoreState(const QByteArray&);
-
+        
     public slots:
-        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent);
+        void getModuleWidgets(core::Module::WidgetType, QWidget*, QVector<QPair<QString, QWidget*> >&);
         
     protected:
         bool iInit(QWidget*);
 
+    private slots:
+        void clearOptions();
+        
     private:
         WdgLogbook*	m_logbook;
         WdgToolbar* m_toolbar;
         WdgSidebar* m_sidebar;
+        WdgOptions* m_options;
     };
 }
 

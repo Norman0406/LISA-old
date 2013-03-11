@@ -18,20 +18,16 @@
 *
 ***********************************************************************/
 
-#include "System.h"
+#include "../gui/MainWindow.h"
 
 using namespace lisa;
 
 int main(int argc, char *argv[])
 {
-    // create a system instance
-    System* sys = System::init(argc, argv);
-    
-    // process application
-    int retVal = 1;
-    if (sys)
-        retVal = sys->run();
-
-    delete sys;
+    QApplication application(argc, argv);
+    MainWindow* window = new MainWindow(0);
+    window->show();
+    int retVal = application.exec();
+    delete window;
     return retVal;
 }

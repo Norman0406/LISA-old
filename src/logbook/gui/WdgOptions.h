@@ -22,7 +22,6 @@
 #define LOGBOOK_WDGOPTIONS_H
 
 #include <core/main/OptionsBase.h>
-#include "../main/LogbookModule.h"
 #include "ui_WdgOptions.h"
 
 namespace logbook
@@ -33,7 +32,7 @@ namespace logbook
         Q_OBJECT
 
     public:
-        WdgOptions(core::PropertyList*, const LogbookModule*, QWidget* parent);
+        WdgOptions(core::PropertyList*, QWidget* parent);
         ~WdgOptions(void);
 
         void apply();

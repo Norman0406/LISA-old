@@ -19,20 +19,27 @@
 ***********************************************************************/
 
 #include "../gui/WdgLogEntry.h"
-#include "../gui/WdgOptions.h"
 #include "LogbookModule.h"
 
 namespace logbook
 {
     LogbookModule::LogbookModule()
-        : Module(), m_logbook(0), m_toolbar(0), m_sidebar(0)
+        : Module(), m_logbook(0), m_toolbar(0), m_sidebar(0), m_options(0)
     {
     }
 
     LogbookModule::~LogbookModule(void)
     {
+        if (m_logbook)
+            m_logbook->deleteLater();
+        if (m_toolbar)
+            m_toolbar->deleteLater();
+        if (m_sidebar)
+            m_sidebar->deleteLater();
+        if (m_options)
+            m_options->deleteLater();
     }
-        
+    
     QString	LogbookModule::getModuleName() const
     {
         return "Logbook";
@@ -54,29 +61,43 @@ namespace logbook
         m_logbook = new WdgLogbook(parent);
         if (!m_logbook)
             return false;
-
-        addModuleWidget(core::Module::WT_MAIN, getDisplayName(), m_logbook);
-
+        
         m_toolbar = new WdgToolbar(parent);
         if (!m_toolbar)
             return false;
-
-        addModuleWidget(core::Module::WT_TOOLBAR, getDisplayName(), m_toolbar);
-
+        
         m_sidebar = new WdgSidebar(parent);
         if (!m_sidebar)
             return false;
-
-        addModuleWidget(core::Module::WT_SIDEBAR, getDisplayName(), m_sidebar);
-        
+                
         return true;
     }
-    
-    void LogbookModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
+
+    void LogbookModule::clearOptions()
     {
-        WdgOptions* wdg = new WdgOptions(&m_properties, this, parent);
-        connect(this, &LogbookModule::destroyed, wdg, &WdgOptions::deleteLater);
-        widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), wdg));
+        m_options = 0;
+    }
+    
+    void LogbookModule::getModuleWidgets(core::Module::WidgetType type, QWidget* parent, QVector<QPair<QString, QWidget*> >& widgets)
+    {
+        switch (type) {
+        case core::Module::WT_MAIN:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_logbook));
+            break;
+        case core::Module::WT_TOOLBAR:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_toolbar));
+            break;
+        case core::Module::WT_SIDEBAR:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_sidebar));
+            break;
+        case core::Module::WT_OPTIONS:
+            if (!m_options) {
+                m_options = new WdgOptions(&m_properties, parent);
+                connect(m_options, &WdgOptions::destroyed, this, &LogbookModule::clearOptions);
+            }
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_options));
+            break;
+        }
     }
 
     QByteArray LogbookModule::saveGeometry()

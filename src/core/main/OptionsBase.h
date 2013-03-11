@@ -41,10 +41,9 @@ namespace core
         virtual void cancel() = 0;
         
     protected:
-        OptionsBase(PropertyList*, const Module*, QWidget* parent);
+        OptionsBase(PropertyList*, QWidget* parent);
 
         PropertyList*	m_properties;
-        const Module*	m_module;
     };
 
     // a default options widgets
@@ -52,7 +51,7 @@ namespace core
         : public OptionsBase
     {
     public:
-        WdgOptionsDefault(const Module*, QWidget*);
+        WdgOptionsDefault(QWidget*);
         ~WdgOptionsDefault();
         
         void apply();

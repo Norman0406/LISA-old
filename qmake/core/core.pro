@@ -43,7 +43,8 @@ SOURCES += \
     ../../src/core/main/PropertyList.cpp \
     ../../src/core/main/PropertyBase.cpp \
     ../../src/core/main/OptionsBase.cpp \
-    ../../src/core/main/Module.cpp
+    ../../src/core/main/Module.cpp \
+    ../../src/core/main/PropertyContainer.cpp
 
 HEADERS += \
     ../../src/core/common/Logging.h \
@@ -56,4 +57,5 @@ HEADERS += \
     ../../src/core/main/Property.h \
     ../../src/core/main/OptionsBase.h \
     ../../src/core/main/ModuleBase.h \
-    ../../src/core/main/Module.h
+    ../../src/core/main/Module.h \
+    ../../src/core/main/PropertyContainer.h

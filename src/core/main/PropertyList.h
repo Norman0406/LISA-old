@@ -73,6 +73,8 @@ namespace core
     Property<T>* PropertyList::getProperty(const QString& name)
     {
         PropertyBase* prop = getPropertyBase(name);
+        if (!prop)
+            return 0;
 
         if (prop->getTypeStr() == PropertyTraits<T>::getTypeStr())
             return dynamic_cast<Property<T>*>(prop);

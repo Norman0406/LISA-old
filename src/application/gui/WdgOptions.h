@@ -23,7 +23,6 @@
 
 #include <core/main/OptionsBase.h>
 #include <core/main/Property.h>
-#include "../main/LISAModule.h"
 #include "ui_WdgOptions.h"
 
 namespace lisa
@@ -34,10 +33,10 @@ namespace lisa
         Q_OBJECT
 
     public:
-        WdgOptions(core::PropertyList*, const LISAModule*, QWidget* parent);
+        WdgOptions(core::PropertyList*, QWidget* parent);
         ~WdgOptions(void);
 
-        void init();
+        void init(const QVector<QPair<QString, bool> >&);
 
     public slots:
         void apply();
@@ -45,8 +44,6 @@ namespace lisa
         void deactivate(QListWidgetItem*);
 
     signals:
-        void fillDetectedModules(QVector<QString>&);
-        void moduleLoaded(const QString&, bool&);
         void enableModule(const QString&, bool);
                 
     private:

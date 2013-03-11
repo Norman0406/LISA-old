@@ -22,16 +22,17 @@
 #define LISA_MAINWINDOW_H
 
 #include <core/main/Module.h>
+#include <core/main/PropertyContainer.h>
 #include <core/common/Logging.h>
 #include "ui_MainWindow.h"
 
 namespace lisa
 {
     class WdgLogging;
-    class System;
 
     class MainWindow
-        : public QMainWindow, public Ui::MainWindow
+        : public QMainWindow, public Ui::MainWindow,
+        public core::PropertyContainer
     {
         Q_OBJECT
 
@@ -43,18 +44,33 @@ namespace lisa
         void showAboutDlg();
         void showOptionsDlg();
         void newLoggingEntry(const core::LoggingEntry&);
-        void addModuleWidget(core::Module::WidgetType, const QString&, QWidget*);
-        
+        void enableModule(const QString&, bool);
+
     signals:
-        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
-        void rebuildSettingsPages();
-        
-    protected:
-        bool iInit();
+        void moduleLoaded(core::Module*);
 
     private:
-        WdgLogging* m_wdgLogging;
+        void loadState();
+        void saveState();
+        void detectModules();
+        void loadModules();
+        core::Module* loadModule(const QString&);
+        bool isModuleLoaded(const QString&);
+        void isModuleLoaded(const QString&, bool&);
+        bool removeModule(core::Module*);
+        bool initModule(core::Module*);
+        bool initModules();
+        bool init();
+        void applyProperties();     
+        void applyModuleProperties(core::Module*);
+        
+        core::Logging*  m_logging;
+        WdgLogging*     m_wdgLogging;
 
+        QMap<QString, QString> m_detectedModules;
+        QVector<core::Module*>	m_modules;
+        QMap<QString, QPair<QByteArray, QByteArray> > m_stateInfo;
+        QMap<QString, QVector<core::Module*> > m_registeredMessages;
     };
 }
 

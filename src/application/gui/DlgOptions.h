@@ -32,6 +32,8 @@ namespace core
 
 namespace lisa
 {
+    class MainWindow;
+
     // options dialog
     class DlgOptions
         : public QDialog, public Ui::DlgOptions
@@ -42,20 +44,19 @@ namespace lisa
         DlgOptions();
         ~DlgOptions();
 
-        void init();
+        void init(QVector<QPair<QString, core::OptionsBase*> >&);
 
     public slots:
         void entryChanged(QString);
-        void addWidget();
-        void removeWidget();
         void accept();
         void apply();
         void reject();
-
-    signals:
-        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >&, QWidget*);
-
+        void addWidget(core::Module*);
+        void removeWidget();
+        
     private:
+        void addWidgets(QVector<QPair<QString, core::OptionsBase*> >&);
+
         QVector<QPair<QString, core::OptionsBase*> > m_options;
     };
 }

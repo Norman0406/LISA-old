@@ -25,8 +25,8 @@
 
 namespace lisa
 {
-    WdgOptions::WdgOptions(core::PropertyList* properties, const LISAModule* module, QWidget* parent)
-        : OptionsBase(properties, module, parent)
+    WdgOptions::WdgOptions(core::PropertyList* properties, QWidget* parent)
+        : OptionsBase(properties, parent)
     {
         setupUi(this);
         
@@ -52,20 +52,15 @@ namespace lisa
     {
     }
 
-    void WdgOptions::init()
+    void WdgOptions::init(const QVector<QPair<QString, bool> >& loadedModules)
     {
         // retrieve detected modules
-        QVector<QString> detectedModules;
-        emit fillDetectedModules(detectedModules);
-        for (int i = 0; i < detectedModules.size(); i++) {
+        for (int i = 0; i < loadedModules.size(); i++) {
             QListWidgetItem* item = new QListWidgetItem(lstModules);
-            item->setText(detectedModules[i]);
+            item->setText(loadedModules[i].first);
             
             // set checked state only if module is currently loaded
-            bool loaded = false;
-            emit moduleLoaded(detectedModules[i], loaded);
-
-            if (loaded) {
+            if (loadedModules[i].second) {
                 item->setTextColor(Qt::black);
                 item->setCheckState(Qt::Checked);
             }
@@ -98,7 +93,7 @@ namespace lisa
             }
         }
                 
-        if (!selected)
+        if (!selected && m_propStyle)
             m_propStyle->setToDefault();
     }
         

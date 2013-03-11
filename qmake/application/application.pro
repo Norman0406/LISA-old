@@ -28,9 +28,7 @@ FORMS += \
     ../../src/application/ui/DlgAbout.ui
 
 SOURCES += \
-    ../../src/application/main/System.cpp \
     ../../src/application/main/main.cpp \
-    ../../src/application/main/LISAModule.cpp \
     ../../src/application/gui/WdgOptions.cpp \
     ../../src/application/gui/WdgLogging.cpp \
     ../../src/application/gui/MainWindow.cpp \
@@ -38,8 +36,6 @@ SOURCES += \
     ../../src/application/gui/DlgAbout.cpp
 
 HEADERS += \
-    ../../src/application/main/System.h \
-    ../../src/application/main/LISAModule.h \
     ../../src/application/gui/WdgOptions.h \
     ../../src/application/gui/WdgLogging.h \
     ../../src/application/gui/MainWindow.h \

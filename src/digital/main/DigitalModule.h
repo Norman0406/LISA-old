@@ -25,6 +25,7 @@
 #include "../gui/WdgDigital.h"
 #include "../gui/WdgToolbar.h"
 #include "../gui/WdgSidebar.h"
+#include "../gui/WdgOptions.h"
 
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
@@ -53,15 +54,19 @@ namespace digital
         bool restoreState(const QByteArray&);
 
     public slots:
-        void createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent);
-                
+        void getModuleWidgets(core::Module::WidgetType, QWidget*, QVector<QPair<QString, QWidget*> >&);
+        
     protected:
         bool iInit(QWidget*);
+
+    private slots:
+        void clearOptions();
 
     private:
         WdgDigital*	m_digital;
         WdgToolbar* m_toolbar;
         WdgSidebar* m_sidebar;
+        WdgOptions* m_options;
     };
 }
 

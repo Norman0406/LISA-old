@@ -18,41 +18,44 @@
 *
 ***********************************************************************/
 
-#include "OptionsBase.h"
+#ifndef CORE_PROPERTYCONTAINER_H
+#define CORE_PROPERTYCONTAINER_H
+
 #include "PropertyList.h"
-#include "Module.h"
 
 namespace core
 {
-    OptionsBase::OptionsBase(PropertyList* properties, QWidget* parent)
-        : QWidget(parent), m_properties(properties)
+    class PropertyContainer
     {
-    }
+    public:
+        virtual ~PropertyContainer(void);
 
-    OptionsBase::~OptionsBase()
+        template <typename T>
+        bool addProperty(const QString& name, const T& defaultVal);
+
+        template <typename T>
+        Property<T>* getProperty(const QString& name);
+        
+        bool loadProperties(const QString& moduleName);
+        bool saveProperties(const QString& moduleName);
+
+    protected:
+        PropertyContainer();
+
+        PropertyList m_properties;
+    };
+    
+    template <typename T>
+    bool PropertyContainer::addProperty(const QString& name, const T& defaultVal)
     {
+        return m_properties.addProperty(Property<T>(name, defaultVal));
     }
     
-    WdgOptionsDefault::WdgOptionsDefault(QWidget* parent)
-        : OptionsBase(0, parent)
+    template <typename T>
+    Property<T>* PropertyContainer::getProperty(const QString& name)
     {
-        QLabel* label = new QLabel("This module does not have any options.", this);
-        label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-        QVBoxLayout* layout = new QVBoxLayout(this);
-        layout->addWidget(label);
-        setLayout(layout);
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    }
-
-    WdgOptionsDefault::~WdgOptionsDefault()
-    {
-    }
-
-    void WdgOptionsDefault::apply()
-    {
-    }
-
-    void WdgOptionsDefault::cancel()
-    {
+        return m_properties.getProperty<T>(name);
     }
 }
+
+#endif // CORE_PROPERTYCONTAINER_H

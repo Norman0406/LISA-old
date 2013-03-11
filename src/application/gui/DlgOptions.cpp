@@ -26,7 +26,7 @@
 namespace lisa
 {
     DlgOptions::DlgOptions()
-        : QDialog(0)
+        : QDialog(0), m_options(0)
     {
         setupUi(this);
     }
@@ -35,27 +35,28 @@ namespace lisa
     {
     }
 
-    void DlgOptions::init()
+    void DlgOptions::init(QVector<QPair<QString, core::OptionsBase*> >& widgets)
     {
-        m_options.clear();
         optModules->clear();
-        createOptionWidgets(m_options, this);
+        addWidgets(widgets);
+        optModules->setCurrentRow(0);
+    }
 
-        for (int i = 0; i < m_options.size(); i++) {
-            QString text = m_options[i].first;
-            core::OptionsBase* widget = m_options[i].second;
-
-            connect(widget, &core::OptionsBase::destroyed, this, &DlgOptions::removeWidget);
+    void DlgOptions::addWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets)
+    {
+        for (int i = 0; i < widgets.size(); i++) {
+            QString text = widgets[i].first;
+            core::OptionsBase* widget = widgets[i].second;
             
             // add widget to stacked widget
             stackedWidget->addWidget(widget);
 
-            QListWidgetItem* item = new QListWidgetItem(optModules);
+            QListWidgetItem* item = new QListWidgetItem(0);
             item->setText(text);
-
             optModules->addItem(item);
+
+            m_options.push_back(QPair<QString, core::OptionsBase*>(text, widget));
         }
-        optModules->setCurrentRow(0);
     }
     
     void DlgOptions::entryChanged(QString text)
@@ -78,13 +79,19 @@ namespace lisa
         stackedWidget->setCurrentWidget(widget);
     }
     
-    void DlgOptions::addWidget()
+    void DlgOptions::addWidget(core::Module* module)
     {
-        QObject* wdg = sender();
+        QVector<QPair<QString, QWidget*> > modOpt;
+        QVector<QPair<QString, core::OptionsBase*> > optWidgets;
+        module->getModuleWidgets(core::Module::WT_OPTIONS, this, modOpt);
 
-        if (wdg) {
-            // UNDONE
+        for (int i = 0; i < modOpt.size(); i++) {
+            core::OptionsBase* options = (core::OptionsBase*)modOpt[i].second;
+            connect(options, &core::OptionsBase::destroyed, this, &DlgOptions::removeWidget);
+            optWidgets.push_back(QPair<QString, core::OptionsBase*>(modOpt[i].first, options));
         }
+
+        addWidgets(optWidgets);
     }
 
     void DlgOptions::removeWidget()

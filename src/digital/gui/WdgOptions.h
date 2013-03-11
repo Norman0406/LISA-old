@@ -22,7 +22,6 @@
 #define DIGITAL_WDGOPTIONS_H
 
 #include <core/main/OptionsBase.h>
-#include "../main/DigitalModule.h"
 #include "ui_WdgOptions.h"
 
 namespace digital
@@ -33,7 +32,7 @@ namespace digital
         Q_OBJECT
 
     public:
-        WdgOptions(core::PropertyList*, const DigitalModule*, QWidget* parent);
+        WdgOptions(core::PropertyList*, QWidget* parent);
         ~WdgOptions(void);
         
         void apply();

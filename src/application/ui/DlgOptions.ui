@@ -35,7 +35,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Modules:</string>
+            <string>Settings:</string>
            </property>
           </widget>
          </item>
@@ -79,7 +79,7 @@
             </font>
            </property>
            <property name="text">
-            <string>ModuleName</string>
+            <string>SettingsName</string>
            </property>
           </widget>
          </item>

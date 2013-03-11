@@ -24,12 +24,20 @@
 namespace digital
 {
     DigitalModule::DigitalModule()
-        : Module(), m_digital(0), m_toolbar(0), m_sidebar(0)
+        : Module(), m_digital(0), m_toolbar(0), m_sidebar(0), m_options(0)
     {
     }
 
     DigitalModule::~DigitalModule(void)
     {
+        if (m_digital)
+            m_digital->deleteLater();
+        if (m_toolbar)
+            m_toolbar->deleteLater();
+        if (m_sidebar)
+            m_sidebar->deleteLater();
+        if (m_options)
+            m_options->deleteLater();
     }
         
     QString	DigitalModule::getModuleName() const
@@ -53,31 +61,45 @@ namespace digital
         m_digital = new WdgDigital(parent);
         if (!m_digital)
             return false;
-
-        addModuleWidget(core::Module::WT_MAIN, getDisplayName(), m_digital);
-
+        
         m_toolbar = new WdgToolbar(parent);
         if (!m_toolbar)
             return false;
-
-        addModuleWidget(core::Module::WT_TOOLBAR, getDisplayName(), m_toolbar);
-
+        
         m_sidebar = new WdgSidebar(parent);
         if (!m_sidebar)
             return false;
-
-        addModuleWidget(core::Module::WT_SIDEBAR, getDisplayName(), m_sidebar);
-                
+                        
         return true;
     }
-            
-    void DigitalModule::createOptionWidgets(QVector<QPair<QString, core::OptionsBase*> >& widgets, QWidget* parent)
+    
+    void DigitalModule::clearOptions()
     {
-        WdgOptions* wdg = new WdgOptions(&m_properties, this, parent);
-        connect(this, &DigitalModule::destroyed, wdg, &WdgOptions::deleteLater);
-        widgets.push_back(QPair<QString, core::OptionsBase*>(getDisplayName(), wdg));
+        m_options = 0;
     }
-
+    
+    void DigitalModule::getModuleWidgets(core::Module::WidgetType type, QWidget* parent, QVector<QPair<QString, QWidget*> >& widgets)
+    {
+        switch (type) {
+        case core::Module::WT_MAIN:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_digital));
+            break;
+        case core::Module::WT_TOOLBAR:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_toolbar));
+            break;
+        case core::Module::WT_SIDEBAR:
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_sidebar));
+            break;
+        case core::Module::WT_OPTIONS:
+            if (!m_options) {
+                m_options = new WdgOptions(&m_properties, parent);
+                connect(m_options, &WdgOptions::destroyed, this, &DigitalModule::clearOptions);
+            }
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_options));
+            break;
+        }
+    }
+    
     QByteArray DigitalModule::saveGeometry()
     {
         return m_digital->saveGeometry();
