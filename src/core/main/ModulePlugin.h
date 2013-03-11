@@ -26,13 +26,13 @@
 
 namespace core
 {
-    class ModuleBase
+    class ModulePlugin
         : public QObject
     {
         Q_OBJECT
 
     public:
-        virtual ~ModuleBase(void) { }
+        virtual ~ModulePlugin(void) { }
         
         // module identifying functions
         virtual QString	getModuleName() const = 0;
@@ -43,7 +43,7 @@ namespace core
     };
 }
 
-#define ModuleBase_iid "LISA.core.modulebase"
-Q_DECLARE_INTERFACE(core::ModuleBase, ModuleBase_iid)
+#define ModulePlugin_iid "LISA.core.moduleplugin"
+Q_DECLARE_INTERFACE(core::ModulePlugin, ModulePlugin_iid)
 
 #endif // CORE_MODULEBASE_H

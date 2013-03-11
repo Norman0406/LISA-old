@@ -56,6 +56,6 @@ HEADERS += \
     ../../src/core/main/PropertyBase.h \
     ../../src/core/main/Property.h \
     ../../src/core/main/OptionsBase.h \
-    ../../src/core/main/ModuleBase.h \
+    ../../src/core/main/ModulePlugin.h \
     ../../src/core/main/Module.h \
     ../../src/core/main/PropertyContainer.h

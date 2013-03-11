@@ -25,13 +25,13 @@
 #include "../common/Exception.h"
 #include "../common/Logging.h"
 #include "OptionsBase.h"
-#include "ModuleBase.h"
+#include "ModulePlugin.h"
 #include "PropertyContainer.h"
 
 namespace core
 {
     class Module
-        : public ModuleBase, public PropertyContainer
+        : public ModulePlugin, public PropertyContainer
     {
         Q_OBJECT
 

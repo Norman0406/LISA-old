@@ -259,7 +259,7 @@ namespace lisa
                         
             // check if the interface matches
             if (module) {
-                core::ModuleBase* modInterface = qobject_cast<core::ModuleBase*>(module);
+                core::ModulePlugin* modInterface = qobject_cast<core::ModulePlugin*>(module);
 
                 // add the plugin to the list
                 if (modInterface) {
@@ -291,7 +291,7 @@ namespace lisa
                         
         // check if the interface matches
         if (module) {
-            core::ModuleBase* modInterface = qobject_cast<core::ModuleBase*>(module);
+            core::ModulePlugin* modInterface = qobject_cast<core::ModulePlugin*>(module);
 
             // add the plugin to the list
             if (modInterface) {

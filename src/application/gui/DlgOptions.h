@@ -26,7 +26,6 @@
 namespace core
 {
     class Module;
-    class ModuleBase;
     class OptionsBase;
 }
 

@@ -33,8 +33,8 @@ namespace logbook
         : public core::Module
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID ModuleBase_iid)
-        Q_INTERFACES(core::ModuleBase)
+        Q_PLUGIN_METADATA(IID ModulePlugin_iid)
+        Q_INTERFACES(core::ModulePlugin)
 
     public:
         LogbookModule();
