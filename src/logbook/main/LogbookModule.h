@@ -22,15 +22,18 @@
 #define LOGBOOK_LOGBOOKMODULE_H
 
 #include <core/main/Module.h>
-#include "../gui/WdgLogbook.h"
 #include "../gui/WdgToolbar.h"
 #include "../gui/WdgSidebar.h"
 #include "../gui/WdgOptions.h"
+#include "ui_WdgLogbook.h"
+#include <QtGui/QStandardItemModel>
 
 namespace logbook
 {
+    class WdgLogEntry;
+
     class LogbookModule
-        : public core::Module
+        : public core::Module, public Ui::WdgLogbook
     {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID ModulePlugin_iid)
@@ -43,11 +46,6 @@ namespace logbook
         QString	getModuleName() const;
         QString getDisplayName() const;
         bool isInit() const;
-                
-        QByteArray saveGeometry();
-        bool restoreGeometry(const QByteArray&);
-        QByteArray saveState();
-        bool restoreState(const QByteArray&);
         
     public slots:
         void getModuleWidgets(core::Module::WidgetType, QWidget*, QVector<QPair<QString, QWidget*> >&);
@@ -57,9 +55,15 @@ namespace logbook
 
     private slots:
         void clearOptions();
+        void addNewEntry(int);
+        void closeLogEntry(int);
+        void showLogEntries(bool);
+        void changeTabName(QString, const WdgLogEntry*);
         
     private:
-        WdgLogbook*	m_logbook;
+        void initDatabaseLayout();
+
+        QWidget*	m_tabBarCloseButton;
         WdgToolbar* m_toolbar;
         WdgSidebar* m_sidebar;
         WdgOptions* m_options;

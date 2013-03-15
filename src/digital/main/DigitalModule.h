@@ -22,11 +22,14 @@
 #define DIGITAL_DIGITALMODULE_H
 
 #include <core/main/Module.h>
-#include "../gui/WdgDigital.h"
 #include "../gui/WdgToolbar.h"
 #include "../gui/WdgSidebar.h"
 #include "../gui/WdgOptions.h"
-
+#include "../gui/WdgWaterfall.h"
+#include "../audio/AudioDeviceIn.h"
+#include "../audio/AudioSpectrum.h"
+#include "ui_WdgDigital.h"
+#include <QtCore/QTimer>
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
 #include <QtCore/QDebug>
@@ -34,7 +37,7 @@
 namespace digital
 {
     class DigitalModule
-        : public core::Module
+        : public core::Module, public Ui::WdgDigital
     {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID ModulePlugin_iid)
@@ -48,11 +51,6 @@ namespace digital
         QString getDisplayName() const;
         bool isInit() const;
 
-        QByteArray saveGeometry();
-        bool restoreGeometry(const QByteArray&);
-        QByteArray saveState();
-        bool restoreState(const QByteArray&);
-
     public slots:
         void getModuleWidgets(core::Module::WidgetType, QWidget*, QVector<QPair<QString, QWidget*> >&);
         
@@ -61,12 +59,17 @@ namespace digital
 
     private slots:
         void clearOptions();
+        void computeSpectrum();
 
     private:
-        WdgDigital*	m_digital;
         WdgToolbar* m_toolbar;
         WdgSidebar* m_sidebar;
         WdgOptions* m_options;
+        
+        AudioDeviceIn*		m_device;
+        AudioSpectrum*		m_spectrum;
+        QTimer*				m_timer;
+        WdgWaterfall*       m_waterfall;
     };
 }
 

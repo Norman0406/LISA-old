@@ -32,7 +32,6 @@ HEADERS += \
     ../../src/logbook/gui/WdgToolbar.h \
     ../../src/logbook/gui/WdgOptions.h \
     ../../src/logbook/gui/WdgLogEntry.h \
-    ../../src/logbook/gui/WdgLogbook.h \
     ../../src/logbook/main/LogbookModule.h \
     ../../src/logbook/gui/WdgSidebar.h
 
@@ -45,7 +44,6 @@ SOURCES += \
     ../../src/logbook/gui/WdgToolbar.cpp \
     ../../src/logbook/gui/WdgOptions.cpp \
     ../../src/logbook/gui/WdgLogEntry.cpp \
-    ../../src/logbook/gui/WdgLogbook.cpp \
     ../../src/logbook/main/LogbookModule.cpp \
     ../../src/logbook/gui/WdgSidebar.cpp
 

@@ -40,14 +40,15 @@ namespace core
             return false;
 
         qDebug() << "initializing module: " << getModuleName();
+        
+        m_parent = parent;
+        QMainWindow::setParent(m_parent);
 
         // load properties from file
         loadProperties(getModuleName());
 
-        m_parent = parent;
-
         // init module
-        if (iInit(parent))
+        if (iInit(m_parent))
             m_isInit = true;
 
         if (m_isInit)
@@ -55,23 +56,6 @@ namespace core
 
         // was it successful?
         return m_isInit;
-    }
-    
-    bool Module::postInitAll()
-    {
-        if (!isInit()) {
-            qCritical() << "module not initialized before post init";
-            return false;
-        }
-
-        iPostInitAll();
-
-        if (!isInit()) {
-            qCritical() << "module not initialized after post init";
-            return false;
-        }
-
-        return true;
     }
 
     void Module::iPostInitAll()
@@ -95,5 +79,25 @@ namespace core
         // overload this function to receive registered messages
         Q_UNUSED(id);
         Q_UNUSED(value);
+    }
+    
+    QByteArray Module::saveGeometry()
+    {
+        return QMainWindow::saveGeometry();
+    }
+
+    bool Module::restoreGeometry(const QByteArray& geometry)
+    {
+        return QMainWindow::restoreGeometry(geometry);
+    }
+
+    QByteArray Module::saveState()
+    {
+        return QMainWindow::saveState();
+    }
+
+    bool Module::restoreState(const QByteArray& state)
+    {
+        return QMainWindow::restoreState(state);
     }
 }

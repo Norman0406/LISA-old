@@ -43,7 +43,6 @@ SOURCES += \
     ../../src/digital/gui/WdgWaterfall.cpp \
     ../../src/digital/gui/WdgToolbar.cpp \
     ../../src/digital/gui/WdgOptions.cpp \
-    ../../src/digital/gui/WdgDigital.cpp \
     ../../src/digital/main/DigitalModule.cpp \
     ../../src/digital/main/Colormap.cpp \
     ../../src/digital/audio/AudioSpectrumWorker.cpp \
@@ -58,7 +57,6 @@ HEADERS += \
     ../../src/digital/gui/WdgWaterfall.h \
     ../../src/digital/gui/WdgToolbar.h \
     ../../src/digital/gui/WdgOptions.h \
-    ../../src/digital/gui/WdgDigital.h \
     ../../src/digital/main/DigitalModule.h \
     ../../src/digital/main/Colormap.h \
     ../../src/digital/audio/AudioSpectrumWorker.h \

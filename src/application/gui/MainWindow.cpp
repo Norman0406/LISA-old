@@ -327,10 +327,7 @@ namespace lisa
 
                 // TODO: there's a problem with OptionsBase::destroyed signal causing DlgOptions::removeWidget() to be called
                 //applyModuleProperties(module);
-
-                // NOTE: or tell all other modules?
-                module->postInitAll();
-
+                
                 emit moduleLoaded(module);
             }
         }
@@ -447,11 +444,6 @@ namespace lisa
                 delete mod;
                 return false;
             }
-        }
-        
-        // tell modules that all modules have been initialized
-        for (int i = 0; i < m_modules.size(); i++) {
-            m_modules[i]->postInitAll();
         }
 
         return true;

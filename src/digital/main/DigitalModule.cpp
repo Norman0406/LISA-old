@@ -24,14 +24,13 @@
 namespace digital
 {
     DigitalModule::DigitalModule()
-        : Module(), m_digital(0), m_toolbar(0), m_sidebar(0), m_options(0)
+        : Module(), m_toolbar(0), m_sidebar(0), m_options(0)
     {
+        setupUi(this);
     }
 
     DigitalModule::~DigitalModule(void)
     {
-        if (m_digital)
-            m_digital->deleteLater();
         if (m_toolbar)
             m_toolbar->deleteLater();
         if (m_sidebar)
@@ -52,16 +51,12 @@ namespace digital
 
     bool DigitalModule::isInit() const
     {
-        return m_digital && m_toolbar && m_sidebar &&
+        return m_toolbar && m_sidebar &&
             Module::isInit();
     }
 
     bool DigitalModule::iInit(QWidget* parent)
     {
-        m_digital = new WdgDigital(parent);
-        if (!m_digital)
-            return false;
-        
         m_toolbar = new WdgToolbar(parent);
         if (!m_toolbar)
             return false;
@@ -69,6 +64,34 @@ namespace digital
         m_sidebar = new WdgSidebar(parent);
         if (!m_sidebar)
             return false;
+                
+        // create spectrum analyzer
+        m_spectrum = new AudioSpectrum(4096, WT_BLACKMANHARRIS, this);
+
+        // create waterfall widget
+
+        m_waterfall = new WdgWaterfall(this);
+        groupBox_2->layout()->addWidget(m_waterfall);
+        m_waterfall->init(m_spectrum->getSpectrumSize());
+
+        // connect spectrum to widget
+        connect(m_spectrum, &AudioSpectrum::passbandChanged, m_waterfall, &WdgWaterfall::setPassband);
+        connect(m_spectrum, &AudioSpectrum::dataReady, m_waterfall, &WdgWaterfall::addSpectrum);
+        m_spectrum->init();
+        m_spectrum->setPassband(100, 3200);
+
+        // init audio device
+        m_device = new AudioDeviceIn(this);
+        m_device->init();
+        m_device->start();
+
+        // init timer to update the widget
+        m_timer = new QTimer(this);
+        m_timer->setTimerType(Qt::PreciseTimer);
+        const int updateInterval = (1 / 15.0f) * 1000;	// fps
+        m_timer->setInterval(updateInterval);
+        connect(m_timer, &QTimer::timeout, this, &DigitalModule::computeSpectrum);
+        m_timer->start();
                         
         return true;
     }
@@ -82,7 +105,7 @@ namespace digital
     {
         switch (type) {
         case core::Module::WT_MAIN:
-            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_digital));
+            widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), this));
             break;
         case core::Module::WT_TOOLBAR:
             widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_toolbar));
@@ -98,25 +121,11 @@ namespace digital
             widgets.push_back(QPair<QString, QWidget*>(getDisplayName(), m_options));
             break;
         }
-    }
+    }    
     
-    QByteArray DigitalModule::saveGeometry()
+    void DigitalModule::computeSpectrum()
     {
-        return m_digital->saveGeometry();
-    }
-
-    bool DigitalModule::restoreGeometry(const QByteArray& geometry)
-    {
-        return m_digital->restoreGeometry(geometry);
-    }
-    
-    QByteArray DigitalModule::saveState()
-    {
-        return m_digital->saveState();
-    }
-
-    bool DigitalModule::restoreState(const QByteArray& state)
-    {
-        return m_digital->restoreState(state);
+        const QByteArray& buffer = m_device->getBuffer(m_spectrum->getFFTSize());
+        m_spectrum->compute(m_device->getFormat(), buffer);
     }
 }

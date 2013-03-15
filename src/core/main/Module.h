@@ -48,33 +48,29 @@ namespace core
                 
         // initializing
         bool init(QWidget*);
-        virtual bool postInitAll();
         virtual bool isInit() const;
-                
-        virtual QByteArray saveGeometry() = 0;
-        virtual bool restoreGeometry(const QByteArray&) = 0;
-        virtual QByteArray saveState() = 0;
-        virtual bool restoreState(const QByteArray&) = 0;
+        
+        virtual QByteArray saveGeometry();
+        virtual bool restoreGeometry(const QByteArray&);
+        virtual QByteArray saveState();
+        virtual bool restoreState(const QByteArray&);
 
     public slots:
         virtual void getModuleWidgets(core::Module::WidgetType, QWidget*, QVector<QPair<QString, QWidget*> >&);
         virtual void msgReceive(QString, const QVariant&);
 
     signals:
-        //void moduleWidgetAdded(WidgetType, const QString&, QWidget*);
         void msgSend(QString, const QVariant&);
         void msgRegister(QString);
 
     protected:
         Module();
 
-        //void addModuleWidget(WidgetType, const QString&, QWidget*);
         virtual void iPostInitAll();
                 
     private:
         bool			m_isInit;
         QWidget*		m_parent;
-        //QVector<ModuleWidget*> m_moduleWidgets;
     };
 }
 

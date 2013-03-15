@@ -27,7 +27,7 @@
 namespace core
 {
     class ModulePlugin
-        : public QObject
+        : public QMainWindow
     {
         Q_OBJECT
 
@@ -39,6 +39,10 @@ namespace core
         virtual QString getDisplayName() const = 0;
         
     protected:
+        ModulePlugin()
+            : QMainWindow(0) {
+        }
+
         virtual bool iInit(QWidget*) = 0;
     };
 }
